@@ -1,0 +1,12 @@
+export enum Routes {
+  LOGIN = 'ENTRADA',
+  REGISTER = 'REGISTRO',
+  HOME = 'PRINCIPAL',
+  EDIT_USER = 'ALTERAR_USUARIO',
+  CONFIGURATION = 'CONFIGURACOES',
+  // USERS = 'USUARIOS',
+}
+export enum Cargo {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
