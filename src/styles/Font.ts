@@ -1,6 +1,6 @@
 export default {
   regular: {
-    fontFamily: 'Mulish-Regular',
+    fontFamily: 'Abel-Regular',
     fontSize: 15,
   },
   bold: {

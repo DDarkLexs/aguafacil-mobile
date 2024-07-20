@@ -1,119 +1,84 @@
 // Importações necessárias
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import {Button, Checkbox, Text, TextInput, useTheme} from 'react-native-paper';
+import {useAppDispatch} from 'app/hooks/useRedux';
+import Font from 'app/styles/Font';
 import Layout from 'app/styles/Layout';
-import {useAppDispatch, useAppSelector} from 'app/hooks/useRedux';
-// import {useAppToast} from '../../hooks/useToast';
-// import {useAuthenticateMutation} from '../../store/api/auth';
-// import {setAuthBiometric, setUsuario} from '../../store/features/auth';
+import React, {useState} from 'react';
+import {Image, StyleSheet, View} from 'react-native';
+import {Button, Divider, Text, TextInput, useTheme} from 'react-native-paper';
+// import fontawesome from "react-native-vector-icons/FontAwesome"
+
+// import { useAppToast } from '../../hooks/useToast';
+// import { useAuthenticateMutation } from '../../store/api/auth';
+// import { setAuthBiometric, setUsuario } from '../../store/features/auth';
 
 // Componente da página de login
 const LoginScreen: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
-  // const isLoading = false
-
-//   const loading = useAppSelector(state => state.app.loading);
-//   const {authBiometrico} = useAppSelector(state => state.auth);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(true);
-//   const [authenticate, {isLoading, isSuccess, data, isError, error}] =
-//     useAuthenticateMutation();
   const dispatch = useAppDispatch();
-  // const toast = useAppToast();
   const theme = useTheme();
+
   const handleLogin = async () => {
     try {
-
-     } catch (error) {
-
-     }
+      // Lógica de autenticação
+    } catch (error) {
+      // Tratamento de erro
+    }
   };
-
-
 
   return (
     <View style={styles.container}>
-      {/* Ícone no canto superior esquerdo */}
       <View style={{position: 'relative', bottom: 10}}>
-      {/*   <Image
-          source={require('../../assets/icon/icon.png')}
+        <Image
+          source={require('../../assets/images/tank-truck.png')}
           style={{width: 150, height: 150}}
-        /> */}
+        />
 
         {/* Título e subtítulo */}
         <Text style={styles.title}>Entrada</Text>
         <Text style={styles.subtitle}>
-          Bem-vindo! Por favor, faça o login para acessar sua conta.
+          Faça a entrada com seu número de telefone
         </Text>
       </View>
 
-      {/* Input de número de telefone */}
+      <Text style={styles.title}></Text>
       <TextInput
-        // disabled={isLoading}
         label="Número de Telefone"
         value={phoneNumber}
         mode="outlined"
-        left={
-          <TextInput.Icon
-            // disabled={isLoading}
-            // loading={isLoading}
-            icon={'account'}
-            size={20}
-          />
-        }
         onChangeText={text => setPhoneNumber(text)}
-        keyboardType="numeric"
+        keyboardType="phone-pad"
         style={styles.input}
       />
-
       <TextInput
         label="Palavra-passe"
-        // disabled={isLoading}
-        right={
-          <TextInput.Icon
-            onPress={() => setPasswordVisible(state => !state)}
-            icon={passwordVisible ? 'eye' : 'eye-off'}
-          />
-        }
-        secureTextEntry={passwordVisible}
-        value={senha}
         mode="outlined"
-        left={
-          <TextInput.Icon
-            // disabled={isLoading}
-            // loading={isLoading}
-            icon={'lock'}
-            size={20}
-          />
-        }
+        value={senha}
         onChangeText={text => setSenha(text)}
+        secureTextEntry={passwordVisible}
+        // right={
+        //   // <fontawesome  />
+        // //   // <TextInput.Icon
+        // //   //   icon={"eye"}
+        // //   //   // icon={passwordVisible ? 'eye-off' : 'eye'}
+        // //   //   // onPress={() => setPasswordVisible(!passwordVisible)}
+        // //   // />
+        // }
         style={styles.input}
       />
-
-      {/* Checkbox para lembrar de autenticar pela próxima vez */}
-      <View style={styles.checkboxContainer}>
-        <Checkbox
-          // disabled={isLoading}
-          status={true ? 'checked' : 'unchecked'}
-          // onPress={() => dispatch(setAuthBiometric(!authBiometrico))}
-        />
-        <Text 
-        // disabled={loading}
-         style={styles.checkboxLabel}>
-          autenticar com biométrico
-        </Text>
-      </View>
-
-      {/* Botão de entrada */}
+      <Button mode="contained" 
+      onPress={handleLogin} 
+      style={styles.button}>
+        Entrada
+      </Button>
+      <Divider style={styles.divider} />
+      
       <Button
-        mode="contained"
-        // disabled={isLoading}
-        // loading={isLoading}
-        style={{borderRadius: theme.roundness}}
-        onPress={handleLogin}>
-        Entrar
+        mode="text"
+        onPress={() => console.log('Criar conta')}
+        style={styles.link}>
+        Criar conta
       </Button>
     </View>
   );
@@ -125,37 +90,37 @@ const styles = StyleSheet.create({
     ...Layout.screenLayout,
     padding: 20,
     justifyContent: 'center',
-  },
-  icon: {
-    // position: 'absolute',
-    // top: 10,
-    // left: 10,
+    alignItems: 'center',
+    fontFamily: Font.bold.fontFamily,
   },
   title: {
+    fontFamily: Font.bold.fontFamily,
     fontSize: 24,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginTop: 20,
   },
   subtitle: {
     fontSize: 18,
     marginTop: 5,
     marginBottom: 20,
-    // fontFamily: 'Mulish-SemiBold',
-    color: '#808080',
+    fontFamily: Font.bold.fontFamily
   },
   input: {
+    width: '100%',
     marginBottom: 12,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  checkboxLabel: {
-    marginLeft: 10,
   },
   button: {
+    width: '100%',
     marginTop: 10,
+    borderRadius: Layout.radius,
+  },
+  divider: {
+    width: '100%',
+    marginVertical: 20,
+  },
+  link: {
+    width: '100%',
+    borderRadius: Layout.radius,
   },
 });
 
