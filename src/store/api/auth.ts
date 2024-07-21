@@ -19,6 +19,28 @@ export const authApiSlice = createApi({
     },
   }),
   endpoints: builder => ({
+    sinUpCliente: builder.mutation<IUserSignUpSuccess, IUserSignUp>({
+      query: bodyData => ({
+        url: '/auth/signup',
+        method: 'POST',
+        body: bodyData,
+        timeout: 10000
+      }),
+      transformResponse: (response: IUserSignUpSuccess) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
     authCliente: builder.mutation<IAuthUserClienteSuccess, IUserLogin>({
       query: bodyData => ({
         url: '/auth/signin',
@@ -64,4 +86,4 @@ export const authApiSlice = createApi({
   }),
 });
 
-export const {useAuthClienteMutation, useAuthMotoristaMutation} = authApiSlice;
+export const {useSinUpClienteMutation, useAuthClienteMutation, useAuthMotoristaMutation} = authApiSlice;

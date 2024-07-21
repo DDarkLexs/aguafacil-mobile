@@ -1,6 +1,7 @@
 const {Routes} = Modules;
 declare type StackScreen = {
   [Routes.LOGIN]: undefined;
+  [Routes.REGISTER]: IUserSignUpProp;
   [Routes.HOME]: undefined;
   [Routes.EDIT_USER]: undefined;
   [Routes.CONFIGURATION]: undefined;

@@ -1,6 +1,7 @@
 import { Routes } from 'app/constants/enums';
 import {createStackNavigator, useTheme} from 'app/modules/index';
 import LoginScreen from 'app/screens/Authentication/Login';
+import RegisterScreen from 'app/screens/Authentication/SignUp';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from 'react-native-paper';
@@ -21,7 +22,7 @@ const AuthStack: React.FC = (): React.JSX.Element => {
 
         >
         <Stack.Screen name={Routes.LOGIN} component={LoginScreen} />
-        {/* <Stack.Screen name={Routes.REGISTER} component={SignupScreen} /> */}
+        <Stack.Screen name={Routes.REGISTER} component={RegisterScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

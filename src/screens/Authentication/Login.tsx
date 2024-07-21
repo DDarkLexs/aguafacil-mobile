@@ -1,20 +1,22 @@
 // Importações necessárias
-import { UsuarioEnum } from 'app/constants/enums';
-import { useAuth } from 'app/hooks/useAuth';
-import { useAppDispatch } from 'app/hooks/useRedux';
-import { useAppToast } from 'app/hooks/useToast';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {Routes, UsuarioEnum} from 'app/constants/enums';
+import {useAuth} from 'app/hooks/useAuth';
+import {useAppDispatch} from 'app/hooks/useRedux';
+import {useAppToast} from 'app/hooks/useToast';
 import {
   useAuthClienteMutation,
   useAuthMotoristaMutation,
 } from 'app/store/api/auth';
-import { setCliente, setMotorista } from 'app/store/features/auth';
+import {setCliente, setMotorista} from 'app/store/features/auth';
 import Font from 'app/styles/Font';
 import Layout from 'app/styles/Layout';
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, View} from 'react-native';
 import {
   Button,
   Divider,
+  Icon,
   SegmentedButtons,
   Text,
   TextInput,
@@ -27,14 +29,16 @@ import {
 // import { setAuthBiometric, setUsuario } from '../../store/features/auth';
 
 // Componente da página de login
-const LoginScreen: React.FC = () => {
+const LoginScreen: React.FC<
+NativeStackScreenProps<StackScreen, Routes.LOGIN>
+> = ({navigation, route}): React.JSX.Element => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [passwordVisible, setPasswordVisible] = useState<boolean>(true);
   const {showPrimaryToast, showErrorToast} = useAppToast();
   const dispatch = useAppDispatch();
   const [value, setValue] = useState<string>(UsuarioEnum.CLIENTE);
-  const auth = useAuth()
+  const auth = useAuth();
 
   const [usuario, setUsuario] = useState({
     senha: 'senhaSegura123',
@@ -94,6 +98,7 @@ const LoginScreen: React.FC = () => {
         }),
       );
     }
+    
     if (responseM.isError) {
       showErrorToast({
         text1: 'Autenticação falhou.',
@@ -123,15 +128,17 @@ const LoginScreen: React.FC = () => {
           buttons={[
             {
               value: UsuarioEnum.MOTORISTA,
+              icon: 'badge-account',
               label: 'Motorista',
               disabled: loading,
               style: {
                 borderRadius: Layout.radius,
               },
-
+              
               // checkedColor: theme.colors.primary
             },
             {
+              icon: 'account',
               label: 'Cliente',
               value: UsuarioEnum.CLIENTE,
               disabled: loading,
@@ -158,13 +165,18 @@ const LoginScreen: React.FC = () => {
         value={usuario.senha}
         onChangeText={senha => setUsuario({...usuario, senha})}
         secureTextEntry={passwordVisible}
-        // right={
-        //   <TextInput.Icon
-        //     icon={'eye'}
-        //     // icon={passwordVisible ? 'eye-off' : 'eye'}
-        //     // onPress={() => setPasswordVisible(!passwordVisible)}
-        //   />
-        // }
+        right={
+          <Icon
+            source={passwordVisible ? 'eye-off' : 'eye'}
+            size={10}
+          />
+          
+          // <TextInput.Icon
+          //   // icon={'eye'}
+          //   icon={passwordVisible ? 'eye-off' : 'eye'}
+          //   onPress={() => setPasswordVisible(!passwordVisible)}
+          // />
+        }
         style={styles.input}
       />
       {/* <Text>
@@ -184,7 +196,7 @@ const LoginScreen: React.FC = () => {
         mode="text"
         loading={loading}
         disabled={loading}
-        onPress={() => console.log('Criar conta')}
+        onPress={() => navigation.navigate(Routes.REGISTER,{telefone: phoneNumber })}
         style={styles.link}>
         Criar conta
       </Button>

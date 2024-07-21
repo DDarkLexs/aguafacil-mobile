@@ -1,3 +1,5 @@
+const {UsuarioEnum} = Modules
+
 interface IAuthUserMotoristaSuccess {
   usuario: IUsuario;
   token: string; // Token de autenticação JWT
@@ -13,4 +15,20 @@ interface IAuthUserClienteSuccess {
 interface IUserLogin {
   senha: string;
   telefone: string;
+}
+
+interface IUserSignUp {
+  nome: string;
+  email?: string;
+  tipo: UsuarioEnum;
+  senha: string;
+  telefone: string;
+}
+
+interface IUserSignUpProp {
+  telefone: string;
+}
+
+interface IUserSignUpSuccess extends ICliente {
+  Usuario: Usuario;
 }

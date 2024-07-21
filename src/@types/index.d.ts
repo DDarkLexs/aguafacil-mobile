@@ -29,9 +29,7 @@ interface ICliente {
   fotoPerfil: string;
   created: Date;
   updated: Date;
-  Usuario: Usuario;
-  ServicosSolicitados: ServicoSolicitado[];
-  Avaliacoes: Avaliacao[];
+  // Usuario: Usuario;
 }
 
 interface IServicoMotorista {
