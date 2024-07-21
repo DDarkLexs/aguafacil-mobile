@@ -41,8 +41,8 @@ NativeStackScreenProps<StackScreen, Routes.LOGIN>
   const auth = useAuth();
 
   const [usuario, setUsuario] = useState({
-    senha: 'senhaSegura123',
-    telefone: '912345672',
+    telefone: '',
+    senha: '',
   });
   const theme = useTheme();
   const [authUserApiC, responseC] = useAuthClienteMutation();
@@ -188,7 +188,7 @@ NativeStackScreenProps<StackScreen, Routes.LOGIN>
         mode="contained"
         onPress={handleLogin}
         style={styles.button}>
-        Entrada
+        Entrar
       </Button>
       <Divider style={styles.divider} />
 

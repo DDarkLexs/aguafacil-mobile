@@ -44,7 +44,7 @@ export const useAuth = () => {
 //   };
 
   return useMemo(
-    () => ({motorista, cliente, token}),
+    () => ({motorista, cliente, token,logOutAccount}),
     [motorista, cliente, token],
   );
 };

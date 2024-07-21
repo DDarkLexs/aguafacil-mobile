@@ -1,45 +1,61 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Routes} from 'app/constants/enums';
-import HomeScreen from 'app/screens/cliente/Home';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import HomeScreen from 'app/screens/cliente/Home';
+import { Routes } from 'app/constants/enums';
+import { Icon, useTheme } from 'react-native-paper';
+import ProfileScreen from 'app/screens/cliente/Profile';
 
-const Tab = createBottomTabNavigator();
 
-const ClientTabNavigator: React.FC = (): React.JSX.Element => {
+const Tab = createMaterialBottomTabNavigator<StackScreen>();
+
+const BottomTabsCliente: React.FC = () => {
   const theme = useTheme();
-
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.secondary,
-        tabBarStyle: {
-          backgroundColor: theme.colors.background,
+      initialRouteName={Routes.HOME}
+      shifting={true}
+      barStyle={{
+        backgroundColor: theme.colors.surfaceVariant,
+      }}
+      activeColor={theme.colors.onBackground}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color }) => {
+          let iconName: string;
+
+          switch (route.name) {
+            case Routes.HOME:
+              iconName = 'home';
+              break;
+            case Routes.EDIT_USER:
+              iconName = 'account';
+              break;
+            default:
+              iconName = 'circle';
+              break;
+          }
+
+          return <Icon  source={iconName} size={24} color={theme.colors.background} />;
         },
-        headerShown: false,
-      }}>
-      <Tab.Screen name={Routes.HOME} component={HomeScreen} />
-      {/* <Tab.Screen name={Routes.PROFILE} component={ProfileScreen} /> */}
+        tabBarColor: theme.colors.background,
+      })}
+      sceneAnimationEnabled={false}
+    >
+      <Tab.Screen
+        name={Routes.HOME}
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+        }}
+      />
+      <Tab.Screen
+        name={Routes.EDIT_USER}
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: 'Perfil',
+        }}
+      />
     </Tab.Navigator>
   );
 };
 
-const styles = StyleSheet.create({
-  appStyle: {
-    flex: 1,
-    margin: 'auto',
-    justifyContent: 'center',
-    textAlign: 'center',
-    alignContent: 'center',
-  },
-  text: {
-    fontFamily: 'Abel-Regular',
-    position: 'absolute',
-    alignSelf: 'center',
-    fontSize: 25,
-  },
-});
-
-export default ClientTabNavigator;
+export default BottomTabsCliente;

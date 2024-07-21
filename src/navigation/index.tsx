@@ -1,12 +1,12 @@
 import {DarkTheme, DefaultTheme} from '@react-navigation/native';
 import {useAppDispatch} from 'app/hooks/useRedux';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
 import {NavigationContainer, useTheme} from '../modules/index';
 // import {setRoutePath} from '../store/features/app';
 import {useAuth} from 'app/hooks/useAuth';
-import AuthStack from './stack/Authstack';
-import ClientTabNavigator from './stack/Clientstack';
+import AuthStack from 'app/navigation/stack/Authstack';
+import ClientTabNavigator from 'app/navigation/stack/ClientStack';
 // import MainStack from './Stack/MainStack';
 
 const AppNavigator: React.FC<any> = (): React.JSX.Element => {
@@ -15,7 +15,8 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
   const isDark = useColorScheme() == 'dark';
   const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
   const dispatch = useAppDispatch();
-  const {cliente, motorista, token} = useAuth();
+  const {cliente, motorista, token, logOutAccount} = useAuth();
+
 
   return (
     <>
@@ -36,9 +37,7 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
 
       // theme={navigationTheme}
       >
-        {!token && <AuthStack />}
-        {!cliente && <ClientTabNavigator />}
-        {/* {!isAuthenticated ? <AuthStack /> : <MainStack />} */}
+      {!token ? <AuthStack /> : cliente ? <ClientTabNavigator /> : null}
       </NavigationContainer>
     </>
   );
