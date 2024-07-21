@@ -19,13 +19,34 @@ export const authApiSlice = createApi({
     },
   }),
   endpoints: builder => ({
-    authenticate: builder.mutation<any, any>({
+    authCliente: builder.mutation<IAuthUserClienteSuccess, IUserLogin>({
       query: bodyData => ({
-        url: '/auth',
+        url: '/auth/signin',
         method: 'POST',
         body: bodyData,
       }),
-      transformResponse: (response: any) => response,
+      transformResponse: (response: IAuthUserClienteSuccess) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
+    authMotorista: builder.mutation<IAuthUserMotoristaSuccess, IUserLogin>({
+      query: bodyData => ({
+        url: '/auth/driver/signin',
+        method: 'POST',
+        body: bodyData,
+      }),
+      transformResponse: (response: IAuthUserMotoristaSuccess) => response,
       transformErrorResponse: (
         error: any,
         meta: FetchBaseQueryMeta | undefined,
@@ -43,4 +64,4 @@ export const authApiSlice = createApi({
   }),
 });
 
-export const {useAuthenticateMutation} = authApiSlice;
+export const {useAuthClienteMutation, useAuthMotoristaMutation} = authApiSlice;

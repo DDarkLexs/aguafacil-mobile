@@ -1,10 +1,25 @@
 // Importações necessárias
-import {useAppDispatch} from 'app/hooks/useRedux';
+import { UsuarioEnum } from 'app/constants/enums';
+import { useAuth } from 'app/hooks/useAuth';
+import { useAppDispatch } from 'app/hooks/useRedux';
+import { useAppToast } from 'app/hooks/useToast';
+import {
+  useAuthClienteMutation,
+  useAuthMotoristaMutation,
+} from 'app/store/api/auth';
+import { setCliente, setMotorista } from 'app/store/features/auth';
 import Font from 'app/styles/Font';
 import Layout from 'app/styles/Layout';
-import React, {useState} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import {Button, Divider, Text, TextInput, useTheme} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import {
+  Button,
+  Divider,
+  SegmentedButtons,
+  Text,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
 // import fontawesome from "react-native-vector-icons/FontAwesome"
 
 // import { useAppToast } from '../../hooks/useToast';
@@ -16,22 +31,82 @@ const LoginScreen: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [passwordVisible, setPasswordVisible] = useState<boolean>(true);
+  const {showPrimaryToast, showErrorToast} = useAppToast();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
+  const [value, setValue] = useState<string>(UsuarioEnum.CLIENTE);
+  const auth = useAuth()
 
-  const handleLogin = async () => {
-    try {
-      // Lógica de autenticação
-    } catch (error) {
-      // Tratamento de erro
+  const [usuario, setUsuario] = useState({
+    senha: 'senhaSegura123',
+    telefone: '912345672',
+  });
+  const theme = useTheme();
+  const [authUserApiC, responseC] = useAuthClienteMutation();
+  const [authUserApiM, responseM] = useAuthMotoristaMutation();
+
+  // Combine o estado de carregamento de ambos os hooks
+  const loading = responseC.isLoading || responseM.isLoading;
+  const handleLogin = () => {
+    switch (value) {
+      case UsuarioEnum.CLIENTE:
+        authUserApiC(usuario);
+        break;
+      case UsuarioEnum.MOTORISTA:
+        authUserApiM(usuario);
+        break;
+
+      default:
+        showErrorToast({
+          text1: 'Seleção necessária',
+          text2: 'Por favor, selecione uma entidade para prosseguir.',
+        });
+        break;
     }
   };
+  useEffect(() => {
+    if (responseC.isSuccess) {
+      const {token, ...data} = responseC.data;
 
+      dispatch(
+        setCliente({
+          data,
+          token,
+        }),
+      );
+    }
+    if (responseC.isError) {
+      showPrimaryToast({
+        text1: 'Autenticação falhou.',
+        text2: JSON.stringify(responseC.error),
+      });
+      console.log(responseC.error);
+    }
+  }, [responseC]);
+
+  useEffect(() => {
+    if (responseM.isSuccess) {
+      const {token, ...data} = responseM.data;
+
+      dispatch(
+        setMotorista({
+          data,
+          token,
+        }),
+      );
+    }
+    if (responseM.isError) {
+      showErrorToast({
+        text1: 'Autenticação falhou.',
+        text2: JSON.stringify(responseM.error),
+      });
+      console.log(responseM.error);
+    }
+  }, [responseM]);
   return (
     <View style={styles.container}>
       <View style={{position: 'relative', bottom: 10}}>
         <Image
-          source={require('../../assets/images/tank-truck.png')}
+          source={require('app/assets/images/icon.png')}
           style={{width: 150, height: 150}}
         />
 
@@ -40,42 +115,75 @@ const LoginScreen: React.FC = () => {
         <Text style={styles.subtitle}>
           Faça a entrada com seu número de telefone
         </Text>
-      </View>
+        <SegmentedButtons
+          style={styles.segmentButton}
+          value={value}
+          density="medium"
+          onValueChange={setValue}
+          buttons={[
+            {
+              value: UsuarioEnum.MOTORISTA,
+              label: 'Motorista',
+              disabled: loading,
+              style: {
+                borderRadius: Layout.radius,
+              },
 
-      <Text style={styles.title}></Text>
+              // checkedColor: theme.colors.primary
+            },
+            {
+              label: 'Cliente',
+              value: UsuarioEnum.CLIENTE,
+              disabled: loading,
+              style: {
+                borderRadius: Layout.radius,
+              },
+            },
+          ]}
+        />
+      </View>
       <TextInput
         label="Número de Telefone"
-        value={phoneNumber}
+        value={usuario.telefone}
         mode="outlined"
-        onChangeText={text => setPhoneNumber(text)}
+        disabled={loading}
+        onChangeText={telefone => setUsuario({...usuario, telefone})}
         keyboardType="phone-pad"
         style={styles.input}
       />
       <TextInput
         label="Palavra-passe"
         mode="outlined"
-        value={senha}
-        onChangeText={text => setSenha(text)}
+        disabled={loading}
+        value={usuario.senha}
+        onChangeText={senha => setUsuario({...usuario, senha})}
         secureTextEntry={passwordVisible}
         // right={
-        //   // <fontawesome  />
-        // //   // <TextInput.Icon
-        // //   //   icon={"eye"}
-        // //   //   // icon={passwordVisible ? 'eye-off' : 'eye'}
-        // //   //   // onPress={() => setPasswordVisible(!passwordVisible)}
-        // //   // />
+        //   <TextInput.Icon
+        //     icon={'eye'}
+        //     // icon={passwordVisible ? 'eye-off' : 'eye'}
+        //     // onPress={() => setPasswordVisible(!passwordVisible)}
+        //   />
         // }
         style={styles.input}
       />
-      <Button mode="contained" 
-      onPress={handleLogin} 
-      style={styles.button}>
+      {/* <Text>
+        {JSON.stringify(auth)}
+      </Text> */}
+      <Button
+        loading={loading}
+        disabled={loading}
+        mode="contained"
+        onPress={handleLogin}
+        style={styles.button}>
         Entrada
       </Button>
       <Divider style={styles.divider} />
-      
+
       <Button
         mode="text"
+        loading={loading}
+        disabled={loading}
         onPress={() => console.log('Criar conta')}
         style={styles.link}>
         Criar conta
@@ -93,6 +201,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontFamily: Font.bold.fontFamily,
   },
+  segmentButton: {
+    borderRadius: Layout.radius,
+  },
   title: {
     fontFamily: Font.bold.fontFamily,
     fontSize: 24,
@@ -103,7 +214,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 5,
     marginBottom: 20,
-    fontFamily: Font.bold.fontFamily
+    fontFamily: Font.bold.fontFamily,
   },
   input: {
     width: '100%',

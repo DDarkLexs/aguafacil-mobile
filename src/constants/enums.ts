@@ -6,7 +6,8 @@ export enum Routes {
   CONFIGURATION = 'CONFIGURACOES',
   // USERS = 'USUARIOS',
 }
-export enum Cargo {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
+
+export enum UsuarioEnum {
+  CLIENTE = 'CLIENTE',
+  MOTORISTA = 'MOTORISTA',
 }

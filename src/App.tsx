@@ -5,14 +5,16 @@
  * @format
  */
 
+import {PaperProvider, StoreProvider} from 'app/modules/index';
+import {dark, light} from 'app/styles/Theme';
 import React from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {dark, light} from 'app/styles/Theme';
-import {PaperProvider, StoreProvider} from 'app/modules/index';
 // import AppNavigator from './src/navigation';
+import {toastConfig} from 'app/components/Toast/CustomToast';
 import {store} from 'app/store/store';
 import 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import AppNavigator from './navigation';
 // import AppNavigator from './navigation';
 // import Toast from 'react-native-toast-message';
@@ -26,7 +28,7 @@ function App(): JSX.Element {
         <PaperProvider theme={theme}>
           <SafeAreaView style={{flex: 1}}>
             <AppNavigator />
-            {/* <Toast config={toastConfig} /> */}
+            <Toast config={toastConfig} />
           </SafeAreaView>
         </PaperProvider>
       </StoreProvider>

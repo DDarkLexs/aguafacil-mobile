@@ -27,7 +27,7 @@ export const calcularIdade = (dataNascimento: Date): number => {
   }
 
   return idade;
-};
+}
 
 export const removerObjetoPorId = (
   id: number,
