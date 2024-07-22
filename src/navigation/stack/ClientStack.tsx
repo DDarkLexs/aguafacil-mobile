@@ -1,25 +1,32 @@
-import React from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {Routes} from 'app/constants/enums';
 import HomeScreen from 'app/screens/cliente/Home';
-import { Routes } from 'app/constants/enums';
-import { Icon, useTheme } from 'react-native-paper';
 import ProfileScreen from 'app/screens/cliente/Profile';
-
+import React from 'react';
+import {Icon, useTheme} from 'react-native-paper';
 
 const Tab = createMaterialBottomTabNavigator<StackScreen>();
 
 const BottomTabsCliente: React.FC = () => {
   const theme = useTheme();
+  const MyTheme = {
+    dark: false,
+    colors: {
+      primary: 'rgb(255, 45, 85)',
+      background: 'rgb(242, 242, 242)',
+      card: 'rgb(255, 255, 255)',
+      text: 'rgb(28, 28, 30)',
+      border: 'rgb(199, 199, 204)',
+      notification: 'rgb(255, 69, 58)',
+    },
+  };
   return (
     <Tab.Navigator
       initialRouteName={Routes.HOME}
       shifting={true}
-      barStyle={{
-        backgroundColor: theme.colors.surfaceVariant,
-      }}
-      activeColor={theme.colors.onBackground}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color }) => {
+      activeColor={theme.colors.primary}
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color}) => {
           let iconName: string;
 
           switch (route.name) {
@@ -34,17 +41,21 @@ const BottomTabsCliente: React.FC = () => {
               break;
           }
 
-          return <Icon  source={iconName} size={24} color={theme.colors.background} />;
+          return (
+            <Icon source={iconName} size={24} color={theme.colors.background} />
+          );
         },
         tabBarColor: theme.colors.background,
+      
       })}
-      sceneAnimationEnabled={false}
-    >
+      sceneAnimationEnabled={true}>
       <Tab.Screen
+    
         name={Routes.HOME}
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
+          
         }}
       />
       <Tab.Screen

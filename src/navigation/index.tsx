@@ -7,15 +7,17 @@ import {NavigationContainer, useTheme} from '../modules/index';
 import {useAuth} from 'app/hooks/useAuth';
 import AuthStack from 'app/navigation/stack/Authstack';
 import ClientTabNavigator from 'app/navigation/stack/ClientStack';
+import { dark, light } from 'app/styles/Theme';
 // import MainStack from './Stack/MainStack';
 
 const AppNavigator: React.FC<any> = (): React.JSX.Element => {
   //   const isAuthenticated = useAppSelector(state => state.auth.token);
   const theme = useTheme();
   const isDark = useColorScheme() == 'dark';
-  const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
+  const navigationTheme: any = theme.dark ? dark : light;
   const dispatch = useAppDispatch();
   const {cliente, motorista, token, logOutAccount} = useAuth();
+  const scheme = useColorScheme();
 
 
   return (
@@ -26,6 +28,7 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
         animated={true}
       />
       <NavigationContainer
+        theme={navigationTheme}     
       // onStateChange={state => {
       //   if (state?.routes[state?.index].state) {
       //     const state2 = state?.routes[state?.index].state;

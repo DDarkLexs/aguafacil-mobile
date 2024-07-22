@@ -1,56 +1,97 @@
-import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {Card, Text, useTheme} from 'react-native-paper';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import { Avatar, Button, Card, Text, TextInput } from 'react-native-paper';
 
-// Exemplo de dados para a lista
-const DATA = [
-  {id: '1', title: 'Item 1', description: 'Descrição do Item 1'},
-  {id: '2', title: 'Item 2', description: 'Descrição do Item 2'},
-  {id: '3', title: 'Item 3', description: 'Descrição do Item 3'},
-];
+interface Truck {
+  name: string;
+  type: string;
+  capacity: number; // Capacidade do tanque
+  distance: string;
+  time: string;
+  image: string;
+}
 
-// Item da lista
-const ListItem = ({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) => {
-  return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <Text variant="headlineSmall">{title}</Text>
-        <Text>{description}</Text>
-      </Card.Content>
-    </Card>
-  );
-};
+const TruckCard: React.FC<{ truck: Truck }> = ({ truck }) => (
+  <Card style={styles.card}>
+    <Card.Title
+      title={truck.name}
+      subtitle={`${truck.type} | Capacidade: ${truck.capacity}L`}
+      left={(props) => <Avatar.Image {...props} source={{ uri: truck.image }} />}
+    />
+    <Card.Content>
+      <Text>{`${truck.distance} (${truck.time})`}</Text>
+    </Card.Content>
+    <Card.Actions>
+  {/*     <Button mode="outlined" onPress={() => console.log('Agendar')}>
+        Agendar
+      </Button> */}
+      <Button mode="contained"  onPress={() => console.log('Chamar Agora')}>
+        Chamar Agora
+      </Button>
+    </Card.Actions>
+  </Card>
+);
 
 const HomeScreen: React.FC = () => {
-  const theme = useTheme();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [trucks, setTrucks] = useState<Truck[]>([
+    {
+      name: 'Caminhão de Água A',
+      type: 'Automático',
+      capacity: 10000, // Capacidade em litros
+      distance: '500m',
+      time: '3 mins',
+      image: 'https://example.com/caminhao-a.jpg', // URL da imagem do caminhão
+    },
+    {
+      name: 'Caminhão de Água B',
+      type: 'Manual',
+      capacity: 15000,
+      distance: '1km',
+      time: '5 mins',
+      image: 'https://example.com/caminhao-b.jpg', // URL da imagem do caminhão
+    },
+    // Adicione mais caminhões aqui
+  ]);
+
+  const filteredTrucks = trucks.filter((truck) =>
+    truck.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
-      <FlatList
-        data={DATA}
-        renderItem={({item}) => (
-          <ListItem title={item.title} description={item.description} />
-        )}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.list}
+    <ScrollView contentContainerStyle={styles.container}>
+      <TextInput
+        label="Buscar"
+        mode="outlined"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        style={styles.searchInput}
       />
-    </View>
+      <Text style={styles.title}>Caminhões Disponíveis</Text>
+      <Text style={styles.subtitle}>{filteredTrucks.length} caminhões encontrados</Text>
+      {filteredTrucks.map((truck, index) => (
+        <TruckCard key={index} truck={truck} />
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  list: {
     padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: 'grey',
+    marginBottom: 16,
+  },
+  searchInput: {
+    marginBottom: 16,
   },
   card: {
     marginBottom: 16,
