@@ -11,8 +11,9 @@ const ProfileScreen: React.FC = () => {
   const [name, setName] = React.useState(cliente?.usuario.nome);
   const [email, setEmail] = React.useState(cliente?.usuario.email);
   const [phone, setPhone] = React.useState(cliente?.usuario.telefone);
-
+  const {logOutAccount} = useAuth()
   const handleLogout = () => {
+    logOutAccount()
     // Implementar lógica de logout
   };
 

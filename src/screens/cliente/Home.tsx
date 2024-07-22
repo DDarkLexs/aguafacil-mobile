@@ -1,31 +1,24 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Avatar, Button, Card, Text, TextInput } from 'react-native-paper';
+import { useAppToast } from 'app/hooks/useToast';
+import { useServicoAvaliableQuery } from 'app/store/api/cliente/servico';
+import Layout from 'app/styles/Layout';
+import { convertToCurrency } from 'app/utils';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
+import {Avatar, Button, Card, Text, TextInput} from 'react-native-paper';
 
-interface Truck {
-  name: string;
-  type: string;
-  capacity: number; // Capacidade do tanque
-  distance: string;
-  time: string;
-  image: string;
-}
 
-const TruckCard: React.FC<{ truck: Truck }> = ({ truck }) => (
+const TruckCard: React.FC<{ truck: IServicoAvaliable }> = ({ truck }) => (
   <Card style={styles.card}>
     <Card.Title
-      title={truck.name}
-      subtitle={`${truck.type} | Capacidade: ${truck.capacity}L`}
-      left={(props) => <Avatar.Image {...props} source={{ uri: truck.image }} />}
+      title={truck.motorista.Usuario.nome}
+      subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${truck.litroAgua}L`}
+      left={(props) => <Avatar.Image {...props} source={{ uri: truck.motorista.fotoPerfil }} />}
     />
     <Card.Content>
-      <Text>{`${truck.distance} (${truck.time})`}</Text>
+      <Text>{truck.descricao}</Text>
     </Card.Content>
     <Card.Actions>
-  {/*     <Button mode="outlined" onPress={() => console.log('Agendar')}>
-        Agendar
-      </Button> */}
-      <Button mode="contained"  onPress={() => console.log('Chamar Agora')}>
+      <Button mode="contained" style={{ borderRadius: Layout.radius }} onPress={() => console.log('Chamar Agora')}>
         Chamar Agora
       </Button>
     </Card.Actions>
@@ -34,28 +27,26 @@ const TruckCard: React.FC<{ truck: Truck }> = ({ truck }) => (
 
 const HomeScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [trucks, setTrucks] = useState<Truck[]>([
-    {
-      name: 'Caminhão de Água A',
-      type: 'Automático',
-      capacity: 10000, // Capacidade em litros
-      distance: '500m',
-      time: '3 mins',
-      image: 'https://example.com/caminhao-a.jpg', // URL da imagem do caminhão
-    },
-    {
-      name: 'Caminhão de Água B',
-      type: 'Manual',
-      capacity: 15000,
-      distance: '1km',
-      time: '5 mins',
-      image: 'https://example.com/caminhao-b.jpg', // URL da imagem do caminhão
-    },
-    // Adicione mais caminhões aqui
-  ]);
+  const apiResponde = useServicoAvaliableQuery();
+  const { showErrorToast } = useAppToast()
+  useEffect(() => {
+    if (apiResponde.isSuccess) {
+      setTrucks(apiResponde.data)
+    }
+    if (apiResponde.isError) {
+      showErrorToast({
+          text1:"Ocorreu um erro ao processar sua solicitação.",
+          text2: JSON.stringify(apiResponde.error)
+      })
+      
+    }
+  
+  }, [apiResponde])
+  
+  const [trucks, setTrucks] = useState<IServicoAvaliable[]>([]);
 
-  const filteredTrucks = trucks.filter((truck) =>
-    truck.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTrucks = trucks.filter(truck =>
+    truck.motorista.Usuario.nome.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -68,7 +59,9 @@ const HomeScreen: React.FC = () => {
         style={styles.searchInput}
       />
       <Text style={styles.title}>Caminhões Disponíveis</Text>
-      <Text style={styles.subtitle}>{filteredTrucks.length} caminhões encontrados</Text>
+      <Text style={styles.subtitle}>
+        {filteredTrucks.length} caminhões encontrados
+      </Text>
       {filteredTrucks.map((truck, index) => (
         <TruckCard key={index} truck={truck} />
       ))}

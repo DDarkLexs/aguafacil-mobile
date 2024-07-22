@@ -8,10 +8,12 @@ import {
   persistStore,
 } from '../modules/index';
 import {authApiSlice} from './api/auth';
+import { clientServiceApiSlice } from './api/cliente/servico';
 import authSlice from './features/auth';
 const rootReducer = combineReducers({
   auth: authSlice,
   //   socket: socketReducer,
+  [clientServiceApiSlice.reducerPath]: clientServiceApiSlice.reducer,
   [authApiSlice.reducerPath]: authApiSlice.reducer,
 });
 
@@ -29,7 +31,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: false,
-    }).concat(authApiSlice.middleware),
+    }).concat(authApiSlice.middleware, clientServiceApiSlice.middleware),
 });
 
 export const persistor = persistStore(store);

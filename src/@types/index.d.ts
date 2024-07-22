@@ -1,4 +1,4 @@
-type TUsuarioTipo = 'CLIENTE' | 'MOTORISTA'
+type TUsuarioTipo = 'CLIENTE' | 'MOTORISTA';
 
 interface IUsuario {
   id: number;
@@ -78,3 +78,8 @@ interface ToastNotificationProps {
   img: any;
 }
 
+interface IServicoAvaliable extends IServicoMotorista {
+  motorista: IMotorista & {
+    Usuario: IUsuario
+  };
+}
