@@ -2,9 +2,11 @@ const {Routes} = Modules;
 declare type StackScreen = {
   [Routes.LOGIN]: undefined;
   [Routes.REGISTER]: IUserSignUpProp;
-  [Routes.HOME]: undefined;
-  [Routes.EDIT_USER]: undefined;
+  [Routes.CLIENT_HOME]: undefined;
+  [Routes.CLIENT_USER_STACK]: undefined;
+  [Routes.CLIENT_EDIT_USER]: undefined;
+  [Routes.CLIENT_VIEW_USER]: undefined;
   [Routes.HISTORIC_CLIENT]: undefined;
-  [Routes.CONFIGURATION]: undefined;
+  [Routes.CLIENT_CONFIGURATION]: undefined;
   // [Routes.EDIT_ARTIGO]: IEditArtigoDto;
 };

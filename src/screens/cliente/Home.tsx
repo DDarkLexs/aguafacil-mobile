@@ -31,6 +31,7 @@ const HomeScreen: React.FC = () => {
   const { showErrorToast } = useAppToast()
   useEffect(() => {
     if (apiResponde.isSuccess) {
+      
       setTrucks(apiResponde.data)
     }
     if (apiResponde.isError) {

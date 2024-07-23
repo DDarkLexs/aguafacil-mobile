@@ -53,7 +53,7 @@ const light = {
 const dark = {
   ...MD3DarkTheme,
   fonts: configureFonts({config: fontConfig}),
-  roundness: 5,
+  roundness: 2,
   colors: {
     primary: 'rgb(165, 200, 255)',
     onPrimary: 'rgb(0, 49, 95)',

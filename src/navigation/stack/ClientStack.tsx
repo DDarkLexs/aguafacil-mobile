@@ -2,7 +2,8 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {Routes} from 'app/constants/enums';
 import HistoricoScreen from 'app/screens/cliente/Historico';
 import HomeScreen from 'app/screens/cliente/Home';
-import ProfileScreen from 'app/screens/cliente/Profile';
+import ProfileNavigator from 'app/screens/cliente/Perfil/Index';
+import ProfileScreen from 'app/screens/cliente/Perfil/Profile';
 import React from 'react';
 import {Icon, useTheme} from 'react-native-paper';
 
@@ -23,7 +24,7 @@ const BottomTabsCliente: React.FC = () => {
   };
   return (
     <Tab.Navigator
-      initialRouteName={Routes.HOME}
+      initialRouteName={Routes.CLIENT_HOME}
       shifting={true}
       activeColor={theme.colors.primary}
       screenOptions={({route}) => ({
@@ -31,10 +32,10 @@ const BottomTabsCliente: React.FC = () => {
           let iconName: string;
 
           switch (route.name) {
-            case Routes.HOME:
+            case Routes.CLIENT_HOME:
               iconName = 'home';
               break;
-            case Routes.EDIT_USER:
+            case Routes.CLIENT_EDIT_USER:
               iconName = 'account';
               break;
             default:
@@ -47,16 +48,13 @@ const BottomTabsCliente: React.FC = () => {
           );
         },
         tabBarColor: theme.colors.background,
-      
       })}
       sceneAnimationEnabled={true}>
       <Tab.Screen
-    
-        name={Routes.HOME}
+        name={Routes.CLIENT_HOME}
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
-          
         }}
       />
       <Tab.Screen
@@ -67,8 +65,8 @@ const BottomTabsCliente: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.EDIT_USER}
-        component={ProfileScreen}
+        name={Routes.CLIENT_USER_STACK}
+        component={ProfileNavigator}
         options={{
           tabBarLabel: 'Perfil',
         }}
