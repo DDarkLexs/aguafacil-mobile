@@ -10,7 +10,7 @@ import {Avatar, Button, Card, Text, TextInput} from 'react-native-paper';
 const TruckCard: React.FC<{ truck: IServicoAvaliable }> = ({ truck }) => (
   <Card style={styles.card}>
     <Card.Title
-      title={truck.motorista.Usuario.nome}
+      title={truck.motorista.usuario.nome}
       subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${truck.litroAgua}L`}
       left={(props) => <Avatar.Image {...props} source={{ uri: truck.motorista.fotoPerfil }} />}
     />
@@ -47,7 +47,7 @@ const HomeScreen: React.FC = () => {
   const [trucks, setTrucks] = useState<IServicoAvaliable[]>([]);
 
   const filteredTrucks = trucks.filter(truck =>
-    truck.motorista.Usuario.nome.toLowerCase().includes(searchQuery.toLowerCase()),
+    truck.motorista.usuario.nome.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (

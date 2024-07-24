@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const convertToCurrency = (number: number): string => {
   const formattedCurrency = Intl.NumberFormat('pt-AO', {
     style: 'currency',
@@ -47,4 +49,13 @@ export const removerObjetoPorId = (
   }
 
   return array;
+};
+
+
+type DateToStringConverter = (date: Date | undefined) => string;
+
+// Implementação da função
+export const convertDateToString: DateToStringConverter = (date) => {
+  // Utilizando o Moment.js para formatar a data como string
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };

@@ -30,5 +30,5 @@ interface IUserSignUpProp {
 }
 
 interface IUserSignUpSuccess extends ICliente {
-  Usuario: Usuario;
+  usuario: IUsuario;
 }

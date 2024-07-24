@@ -29,7 +29,7 @@ interface ICliente {
   fotoPerfil: string;
   created: Date;
   updated: Date;
-  // Usuario: Usuario;
+  // usuario: usuario;
 }
 
 interface IServicoMotorista {
@@ -56,8 +56,8 @@ interface IServicoSolicitado {
   motoristaId: number;
   created: Date;
   updated: Date;
-  Cliente: Cliente;
-  Motorista: Motorista;
+  cliente: ICliente;
+  motorista: IMotorista;
 }
 
 interface IAvaliacao {
@@ -68,8 +68,8 @@ interface IAvaliacao {
   comentario?: string;
   created: Date;
   updated: Date;
-  Cliente: Cliente;
-  Motorista: Motorista;
+  cliente: Cliente;
+  motorista: Motorista;
 }
 
 interface ToastNotificationProps {
@@ -80,6 +80,13 @@ interface ToastNotificationProps {
 
 interface IServicoAvaliable extends IServicoMotorista {
   motorista: IMotorista & {
-    Usuario: IUsuario
+    usuario: IUsuario
+  };
+}
+
+
+interface IServicoArchive extends IServicoSolicitado {
+  motorista: IMotorista & {
+    usuario: IUsuario
   };
 }

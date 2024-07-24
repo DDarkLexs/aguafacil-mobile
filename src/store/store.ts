@@ -10,8 +10,10 @@ import {
 import {authApiSlice} from './api/auth';
 import { clientServiceApiSlice } from './api/cliente/servico';
 import authSlice from './features/auth';
+import clientearquivoSlice from './features/Cliente/arquivo';
 const rootReducer = combineReducers({
   auth: authSlice,
+  clientArquivo: clientearquivoSlice,
   //   socket: socketReducer,
   [clientServiceApiSlice.reducerPath]: clientServiceApiSlice.reducer,
   [authApiSlice.reducerPath]: authApiSlice.reducer,
@@ -20,7 +22,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: '@AGUAFACIL',
   storage: AsyncStorage,
-  whitelist: ['auth'], // Os reducers que você quer persistir
+  whitelist: ['auth', 'clientArquivo'], // Os reducers que você quer persistir
 };
 
 const persistedReducer = persistReducer({...persistConfig}, rootReducer);
