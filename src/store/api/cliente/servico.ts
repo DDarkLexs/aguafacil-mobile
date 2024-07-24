@@ -42,7 +42,29 @@ export const clientServiceApiSlice = createApi({
         return error;
       },
     }),
+    historicService: builder.query<IServicoArchive[], void>({
+      query: bodyData => ({
+        url: '/solicitacao/historico',
+        method: 'GET',
+        body: bodyData,
+        timeout: 10000,
+      }),
+      transformResponse: (response: IServicoArchive[]) => response,
+      transformErrorResponse: (
+        error: any,
+        meta: FetchBaseQueryMeta | undefined,
+        arg: any,
+      ) => {
+        if (meta?.response) {
+          const msg = Array.isArray(Object(error.data.message))
+            ? String(error.data.message[0])
+            : String(error.data.message);
+          return msg;
+        }
+        return error;
+      },
+    }),
   }),
 });
 
-export const {useServicoAvaliableQuery} = clientServiceApiSlice;
+export const {useServicoAvaliableQuery, useHistoricServiceQuery} = clientServiceApiSlice;

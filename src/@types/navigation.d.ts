@@ -9,6 +9,7 @@ declare type StackScreen = {
   [Routes.CLIENT_VIEW_USER]: undefined;
   [Routes.HISTORIC_CLIENT_SINGLE]: IServicoArchive;
   [Routes.HISTORIC_CLIENT]: undefined; 
+  [Routes.HISTORIC_STACK_CLIENT]: undefined; 
   [Routes.CLIENT_CONFIGURATION]: undefined;
   // [Routes.EDIT_ARTIGO]: IEditArtigoDto;
 };
