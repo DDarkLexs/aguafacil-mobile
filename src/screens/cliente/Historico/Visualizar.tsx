@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
-import {Text, Title, Paragraph, Avatar, Card} from 'react-native-paper';
-import {RouteProp} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Routes} from 'app/constants/enums';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {convertDateToString} from 'app/utils';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Text, Title, Paragraph, Avatar, Card } from 'react-native-paper';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Routes } from 'app/constants/enums';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { convertDateToString, convertToCurrency, convertToLitro } from 'app/utils';
+
 
 const ServicoDetailScreen: React.FC<
   NativeStackScreenProps<StackScreen, Routes.HISTORIC_CLIENT_SINGLE>
@@ -28,14 +29,10 @@ const ServicoDetailScreen: React.FC<
             </View>
           </View>
           <Paragraph>Status: {servico.status}</Paragraph>
-          <Paragraph>
-            Data de Conclusão: {convertDateToString(servico.dataConclusao)}
-          </Paragraph>
-          <Paragraph>
-            Descrição: {servico.descricao || 'Nenhuma descrição disponível'}
-          </Paragraph>
-          <Paragraph>Preço: R$ {servico.preco.toFixed(2)}</Paragraph>
-          <Paragraph>Litros de Água: {servico.litroAgua}</Paragraph>
+          <Paragraph>Data de Conclusão: {convertDateToString(servico.dataConclusao)}</Paragraph>
+          <Paragraph>Descrição: {servico.descricao || 'Nenhuma descrição disponível'}</Paragraph>
+          <Paragraph>Preço: {convertToCurrency(servico.preco)}</Paragraph>
+          <Paragraph>Litros de Água: {convertToLitro(servico.litroAgua)}</Paragraph>
         </Card.Content>
       </Card>
     </ScrollView>

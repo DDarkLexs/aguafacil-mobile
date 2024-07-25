@@ -1,4 +1,5 @@
 import moment from 'moment';
+import numeral from 'numeral';
 
 export const convertToCurrency = (number: number): string => {
   const formattedCurrency = Intl.NumberFormat('pt-AO', {
@@ -57,4 +58,17 @@ type DateToStringConverter = (date: Date | undefined) => string;
 export const convertDateToString: DateToStringConverter = date => {
   // Utilizando o Moment.js para formatar a data como string
   return moment(date).format('YYYY-MM-DD HH:mm:ss');
+};
+
+/**
+ * Converte um número para uma string formatada em litros.
+ * @param num - O número a ser convertido.
+ * @returns A string formatada em litros.
+ */
+export const convertToLitro = (num: number): string => {
+  // Configura o formato para litros (ex: "1,000 L")
+  const format = '0,0 L';
+
+  // Usa a biblioteca numeral para formatar o número
+  return numeral(num).format(format);
 };

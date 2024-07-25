@@ -1,38 +1,50 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Routes} from 'app/constants/enums';
+import {useAppDispatch, useAppSelector} from 'app/hooks/useRedux';
+import {useAppToast} from 'app/hooks/useToast';
+import {useHistoricServiceQuery} from 'app/store/api/cliente/servico';
+import {setServicoArquivo} from 'app/store/features/cliente/arquivo';
+import {convertDateToString} from 'app/utils';
 import * as React from 'react';
-import {View, FlatList, StyleSheet} from 'react-native';
-import {Text, Appbar, Card, Button} from 'react-native-paper';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {Appbar, Button, Card, Text} from 'react-native-paper';
 
-type Order = {
-  id: string;
-  driverName: string;
-  date: string;
-  status: string;
-};
+const HistoricoScreen: React.FC<
+  NativeStackScreenProps<StackScreen, Routes.HISTORIC_CLIENT>
+> = ({navigation, route}): React.JSX.Element => {
+  const apiQuery = useHistoricServiceQuery();
+  const dispatch = useAppDispatch();
+  const {showErrorToast} = useAppToast();
+  const data = useAppSelector(state => state.clientArquivo.servico);
 
-const orders: Order[] = [
-  {
-    id: '1',
-    driverName: 'Carlos Silva',
-    date: '2024-07-20',
-    status: 'Delivered',
-  },
-  {id: '2', driverName: 'Ana Oliveira', date: '2024-07-19', status: 'Pending'},
-  {id: '3', driverName: 'Pedro Souza', date: '2024-07-18', status: 'Cancelled'},
-  // Adicione mais pedidos conforme necessário
-];
+  React.useEffect(() => {
+    if (apiQuery.isSuccess) {
+      dispatch(setServicoArquivo(apiQuery.data));
+    }
 
-const HistoricoScreen: React.FC = () => {
-  const renderItem = ({item}: {item: Order}) => (
+    if (apiQuery.isError) {
+      showErrorToast({
+        text1: 'Ocorreu um erro ao processar os histórico.',
+        text2: JSON.stringify(apiQuery.error),
+      });
+    }
+  }, [apiQuery]);
+
+  const renderItem = ({item}: {item: IServicoArchive}) => (
     <Card style={styles.card}>
       <Card.Content>
         <Text style={styles.title}>Pedido #{item.id}</Text>
-        <Text>Motorista: {item.driverName}</Text>
-        <Text>Data: {item.date}</Text>
+        <Text>Motorista: {item.motorista.usuario.nome}</Text>
+        <Text>
+          Data da conclusão: {convertDateToString(item.dataConclusao)}
+        </Text>
         <Text>Status: {item.status}</Text>
       </Card.Content>
       <Card.Actions>
         <Button
-          onPress={() => console.log(`Ver detalhes do pedido ${item.id}`)}>
+          onPress={() =>
+            navigation.navigate(Routes.HISTORIC_CLIENT_SINGLE, item)
+          }>
           Ver Detalhes
         </Button>
       </Card.Actions>
@@ -45,9 +57,9 @@ const HistoricoScreen: React.FC = () => {
         <Appbar.Content title="Histórico de Pedidos" />
       </Appbar.Header>
       <FlatList
-        data={orders}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         contentContainerStyle={styles.list}
       />
     </View>

@@ -1,8 +1,8 @@
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {Routes} from 'app/constants/enums';
-import HistoricoScreen from 'app/screens/cliente/Historico';
+import HistoricoScreen from 'app/screens/cliente/Historico/Index';
 import HomeStack from 'app/screens/cliente/Home';
-import HomeScreen from 'app/screens/cliente/Home/Home';
+// import HomeScreen from 'app/screens/cliente/Home/Home';
 import ProfileNavigator from 'app/screens/cliente/Perfil/Index';
 import ProfileScreen from 'app/screens/cliente/Perfil/Profile';
 import React from 'react';
@@ -59,7 +59,7 @@ const BottomTabsCliente: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.HISTORIC_CLIENT}
+        name={Routes.HISTORIC_STACK_CLIENT}
         component={HistoricoScreen}
         options={{
           tabBarLabel: 'Histórico',
