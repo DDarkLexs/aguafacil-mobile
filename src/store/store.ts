@@ -1,5 +1,7 @@
 // import {persistReducer, persistStore} from 'redux-persist';
 
+import authSlice from 'app/store/features/auth';
+import clientearquivoSlice from 'app/store/features/cliente/arquivo';
 import {
   AsyncStorage,
   combineReducers,
@@ -8,15 +10,15 @@ import {
   persistStore,
 } from '../modules/index';
 import {authApiSlice} from './api/auth';
-import { clientServiceApiSlice } from './api/cliente/servico';
-import authSlice from 'app/store/features/auth';
-import clientearquivoSlice from 'app/store/features/cliente/arquivo';
+import {clientServiceApiSlice} from './api/cliente/servico';
+import {locationApiSlice} from './api/location';
 const rootReducer = combineReducers({
   auth: authSlice,
   clientArquivo: clientearquivoSlice,
   //   socket: socketReducer,
   [clientServiceApiSlice.reducerPath]: clientServiceApiSlice.reducer,
   [authApiSlice.reducerPath]: authApiSlice.reducer,
+  [locationApiSlice.reducerPath]: locationApiSlice.reducer,
 });
 
 const persistConfig = {
@@ -33,7 +35,11 @@ export const store = configureStore({
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: false,
-    }).concat(authApiSlice.middleware, clientServiceApiSlice.middleware),
+    }).concat(
+      authApiSlice.middleware,
+      clientServiceApiSlice.middleware,
+      locationApiSlice.middleware,
+    ),
 });
 
 export const persistor = persistStore(store);

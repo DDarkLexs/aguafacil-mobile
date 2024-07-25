@@ -72,3 +72,32 @@ export const convertToLitro = (num: number): string => {
   // Usa a biblioteca numeral para formatar o número
   return numeral(num).format(format);
 };
+
+
+// fetchLocationData.js
+
+/**
+ * Função para buscar dados de localização usando a API Nominatim
+ * @param {number} latitude - Latitude para a busca
+ * @param {number} longitude - Longitude para a busca
+ * @returns {Promise<object>} - Dados da localização
+ */
+export const fetchLocationData = async (latitude: number, longitude: number) => {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+  
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Erro na solicitação: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('Dados da localização:', data);
+    
+    return data; // Retorna os dados para uso posterior
+  } catch (error) {
+    console.error('Erro ao buscar dados da localização:', error);
+    throw error; // Propaga o erro para que possa ser tratado onde a função é chamada
+  }
+};

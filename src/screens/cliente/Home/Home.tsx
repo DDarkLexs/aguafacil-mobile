@@ -7,20 +7,20 @@ import Layout from 'app/styles/Layout';
 import { convertToCurrency } from 'app/utils';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { getDistance } from 'geolib';
 import { Avatar, Button, Card, Text, TextInput } from 'react-native-paper';
+import numeral from 'numeral';
 
-const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
-
+// Componente TruckCard
+const TruckCard: React.FC<{ truck: IServicoAvaliable }> = ({ truck }) => {
   const navigation = useAppNavigation();
   return (
     <Card style={styles.card}>
       <Card.Title
         title={truck.motorista.usuario.nome}
-        subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${
-          truck.litroAgua
-        }L`}
-        left={props => (
-          <Avatar.Image {...props} source={{uri: truck.motorista.fotoPerfil}} />
+        subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${truck.litroAgua}L`}
+        left={(props) => (
+          <Avatar.Image {...props} source={{ uri: truck.motorista.fotoPerfil }} />
         )}
       />
       <Card.Content>
@@ -29,8 +29,9 @@ const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
       <Card.Actions>
         <Button
           mode="contained"
-          style={{borderRadius: Layout.radius}}
-          onPress={() => navigation.navigate(Routes.CLIENT_PAYMENT_METHOD, truck)}>
+          style={{ borderRadius: Layout.radius }}
+          onPress={() => navigation.navigate(Routes.CLIENT_PAYMENT_METHOD, truck)}
+        >
           Chamar Agora
         </Button>
       </Card.Actions>
@@ -38,40 +39,46 @@ const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
   );
 };
 
+// Componente HomeScreen
 const HomeScreen: React.FC<
   NativeStackScreenProps<StackScreen, Routes.CLIENT_SERVICE_AVAILABLE>
-> = ({navigation, route}): React.JSX.Element => {
+> = ({ navigation, route }): React.JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
-  const apiResponde = useServicoAvaliableQuery();
-  const {showErrorToast} = useAppToast();
-  const {showErrorToast} = useAppToast();
+  const [trucks, setTrucks] = useState<IServicoAvaliable[]>([]);
+  const apiResponse = useServicoAvaliableQuery();
+  const { showErrorToast } = useAppToast();
+
+
+
+// Coordenadas de exemplo
+const origin = { latitude: -8.8399876, longitude: 13.2894368 }; // Origem (Luanda, por exemplo)
+const destination = { latitude: -9.6899101, longitude: 13.4067913 }; // Destino (Benguela, por exemplo)
+
+const distance = getDistance(origin, destination);
+
+// Calcular distância em metros usando geolib
+const distanceKm = distance / 1000;
+
+// Usar numeral para formatar a distância
+const formattedDistance = numeral(distanceKm).format('0,0.00');
+console.log(`Distância: ${formattedDistance} km`);
+
+  // Atualizar lista de caminhões quando a resposta da API mudar
   useEffect(() => {
-    if (apiResponde.isSuccess) {
-      setTrucks(apiResponde.data);
-      setTrucks(apiResponde.data);
+    if (apiResponse.isSuccess) {
+      setTrucks(apiResponse.data);
     }
-    if (apiResponde.isError) {
+    if (apiResponse.isError) {
       showErrorToast({
         text1: 'Ocorreu um erro ao processar sua solicitação.',
-        text2: JSON.stringify(apiResponde.error),
-      });
-        text1: 'Ocorreu um erro ao processar sua solicitação.',
-        text2: JSON.stringify(apiResponde.error),
+        text2: JSON.stringify(apiResponse.error),
       });
     }
-  }, [apiResponde]);
+  }, [apiResponse, showErrorToast]);
 
-  }, [apiResponde]);
-
-  const [trucks, setTrucks] = useState<IServicoAvaliable[]>([]);
-
-  const filteredTrucks = trucks.filter(truck =>
-    truck.motorista.usuario.nome
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()),
-    truck.motorista.usuario.nome
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()),
+  // Filtrar caminhões com base na busca
+  const filteredTrucks = trucks.filter((truck) =>
+    truck.motorista.usuario.nome.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -94,6 +101,7 @@ const HomeScreen: React.FC<
   );
 };
 
+// Estilos
 const styles = StyleSheet.create({
   container: {
     padding: 16,
