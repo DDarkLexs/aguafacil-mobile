@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
-import { Text, Appbar, Card, Button } from 'react-native-paper';
+import {View, FlatList, StyleSheet} from 'react-native';
+import {Text, Appbar, Card, Button} from 'react-native-paper';
 
 type Order = {
   id: string;
@@ -10,14 +10,19 @@ type Order = {
 };
 
 const orders: Order[] = [
-  { id: '1', driverName: 'Carlos Silva', date: '2024-07-20', status: 'Delivered' },
-  { id: '2', driverName: 'Ana Oliveira', date: '2024-07-19', status: 'Pending' },
-  { id: '3', driverName: 'Pedro Souza', date: '2024-07-18', status: 'Cancelled' },
+  {
+    id: '1',
+    driverName: 'Carlos Silva',
+    date: '2024-07-20',
+    status: 'Delivered',
+  },
+  {id: '2', driverName: 'Ana Oliveira', date: '2024-07-19', status: 'Pending'},
+  {id: '3', driverName: 'Pedro Souza', date: '2024-07-18', status: 'Cancelled'},
   // Adicione mais pedidos conforme necessário
 ];
 
 const HistoricoScreen: React.FC = () => {
-  const renderItem = ({ item }: { item: Order }) => (
+  const renderItem = ({item}: {item: Order}) => (
     <Card style={styles.card}>
       <Card.Content>
         <Text style={styles.title}>Pedido #{item.id}</Text>
@@ -26,7 +31,10 @@ const HistoricoScreen: React.FC = () => {
         <Text>Status: {item.status}</Text>
       </Card.Content>
       <Card.Actions>
-        <Button onPress={() => console.log(`Ver detalhes do pedido ${item.id}`)}>Ver Detalhes</Button>
+        <Button
+          onPress={() => console.log(`Ver detalhes do pedido ${item.id}`)}>
+          Ver Detalhes
+        </Button>
       </Card.Actions>
     </Card>
   );

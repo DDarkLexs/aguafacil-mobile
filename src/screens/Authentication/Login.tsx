@@ -1,5 +1,5 @@
 // Importações necessárias
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Routes, UsuarioEnum} from 'app/constants/enums';
 import {useAuth} from 'app/hooks/useAuth';
 import {useAppDispatch} from 'app/hooks/useRedux';
@@ -30,7 +30,7 @@ import {
 
 // Componente da página de login
 const LoginScreen: React.FC<
-NativeStackScreenProps<StackScreen, Routes.LOGIN>
+  NativeStackScreenProps<StackScreen, Routes.LOGIN>
 > = ({navigation, route}): React.JSX.Element => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
@@ -98,7 +98,7 @@ NativeStackScreenProps<StackScreen, Routes.LOGIN>
         }),
       );
     }
-    
+
     if (responseM.isError) {
       showErrorToast({
         text1: 'Autenticação falhou.',
@@ -134,7 +134,7 @@ NativeStackScreenProps<StackScreen, Routes.LOGIN>
               style: {
                 borderRadius: Layout.radius,
               },
-              
+
               // checkedColor: theme.colors.primary
             },
             {
@@ -166,11 +166,8 @@ NativeStackScreenProps<StackScreen, Routes.LOGIN>
         onChangeText={senha => setUsuario({...usuario, senha})}
         secureTextEntry={passwordVisible}
         right={
-          <Icon
-            source={passwordVisible ? 'eye-off' : 'eye'}
-            size={10}
-          />
-          
+          <Icon source={passwordVisible ? 'eye-off' : 'eye'} size={10} />
+
           // <TextInput.Icon
           //   // icon={'eye'}
           //   icon={passwordVisible ? 'eye-off' : 'eye'}
@@ -196,7 +193,9 @@ NativeStackScreenProps<StackScreen, Routes.LOGIN>
         mode="text"
         loading={loading}
         disabled={loading}
-        onPress={() => navigation.navigate(Routes.REGISTER,{telefone: phoneNumber })}
+        onPress={() =>
+          navigation.navigate(Routes.REGISTER, {telefone: phoneNumber})
+        }
         style={styles.link}>
         Criar conta
       </Button>

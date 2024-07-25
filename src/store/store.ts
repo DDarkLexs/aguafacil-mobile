@@ -8,7 +8,7 @@ import {
   persistStore,
 } from '../modules/index';
 import {authApiSlice} from './api/auth';
-import { clientServiceApiSlice } from './api/cliente/servico';
+import {clientServiceApiSlice} from './api/cliente/servico';
 import authSlice from './features/auth';
 import clientearquivoSlice from './features/Cliente/arquivo';
 const rootReducer = combineReducers({

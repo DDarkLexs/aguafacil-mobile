@@ -1,4 +1,4 @@
-import { Routes, UsuarioEnum } from '../constants/enums';
+import {Routes, UsuarioEnum} from '../constants/enums';
 
 declare global {
   namespace Modules {

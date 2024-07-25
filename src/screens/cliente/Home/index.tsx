@@ -2,7 +2,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
 import Home from './Home';
-import { Routes } from 'app/constants/enums';
+import {Routes} from 'app/constants/enums';
 
 const Stack = createStackNavigator<StackScreen>();
 
@@ -14,12 +14,12 @@ const HomeStack = () => {
         component={Home}
         options={{title: 'Principal'}}
       />
-{/*       <Stack.Screen
+      {/*       <Stack.Screen
         name={Routes.CLIENT_EDIT_USER}
         component={EditProfileScreen}
         options={{title: 'Alterar Perfil'}}
       /> */}
-      {/* 
+      {/*
       <Stack.Screen name={Routes} component={ViewProfileScreen} options={{ title: 'Ver Perfil' }} />
       <Stack.Screen name={Routes} component={EditProfileScreen} options={{ title: 'Editar Perfil' }} /> */}
     </Stack.Navigator>

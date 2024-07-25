@@ -80,13 +80,12 @@ interface ToastNotificationProps {
 
 interface IServicoAvaliable extends IServicoMotorista {
   motorista: IMotorista & {
-    usuario: IUsuario
+    usuario: IUsuario;
   };
 }
 
-
 interface IServicoArchive extends IServicoSolicitado {
   motorista: IMotorista & {
-    usuario: IUsuario
+    usuario: IUsuario;
   };
 }
