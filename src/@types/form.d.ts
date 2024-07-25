@@ -1,4 +1,4 @@
-const {UsuarioEnum} = Modules
+const {UsuarioEnum} = Modules;
 
 interface IAuthUserMotoristaSuccess {
   usuario: IUsuario;

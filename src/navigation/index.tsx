@@ -7,7 +7,7 @@ import {NavigationContainer, useTheme} from '../modules/index';
 import {useAuth} from 'app/hooks/useAuth';
 import AuthStack from 'app/navigation/stack/Authstack';
 import ClientTabNavigator from 'app/navigation/stack/ClientStack';
-import { dark, light } from 'app/styles/Theme';
+import {dark, light} from 'app/styles/Theme';
 // import MainStack from './Stack/MainStack';
 
 const AppNavigator: React.FC<any> = (): React.JSX.Element => {
@@ -19,7 +19,6 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
   const {cliente, motorista, token, logOutAccount} = useAuth();
   const scheme = useColorScheme();
 
-
   return (
     <>
       <StatusBar
@@ -28,19 +27,19 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
         animated={true}
       />
       <NavigationContainer
-        theme={navigationTheme}     
-      // onStateChange={state => {
-      //   if (state?.routes[state?.index].state) {
-      //     const state2 = state?.routes[state?.index].state;
+        theme={navigationTheme}
+        // onStateChange={state => {
+        //   if (state?.routes[state?.index].state) {
+        //     const state2 = state?.routes[state?.index].state;
 
-      //     const route1 = state2?.routes[Number(state2?.index)].name;
-      //     dispatch(setRoutePath(String(route1)));
-      //   }
-      // }}
+        //     const route1 = state2?.routes[Number(state2?.index)].name;
+        //     dispatch(setRoutePath(String(route1)));
+        //   }
+        // }}
 
-      // theme={navigationTheme}
+        // theme={navigationTheme}
       >
-      {!token ? <AuthStack /> : cliente ? <ClientTabNavigator /> : null}
+        {!token ? <AuthStack /> : cliente ? <ClientTabNavigator /> : null}
       </NavigationContainer>
     </>
   );

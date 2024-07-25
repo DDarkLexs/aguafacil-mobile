@@ -1,10 +1,10 @@
-type IUserType = "motorista" | "cliente";
+type IUserType = 'motorista' | 'cliente';
 
 type IUser<T extends IMotorista | ICliente, U extends IUserType> = {
   usuario: IUsuario;
 } & {
   [P in U]: T;
-}
+};
 
 interface IUserBase {
   id: number;
@@ -16,5 +16,3 @@ interface IUserBase {
   created: Date;
   updated: Date;
 }
-
-

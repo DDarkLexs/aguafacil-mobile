@@ -25,7 +25,7 @@ const HomeStack = () => {
         component={EditProfileScreen}
         options={{title: 'Alterar Perfil'}}
       /> */}
-      {/* 
+      {/*
       <Stack.Screen name={Routes} component={ViewProfileScreen} options={{ title: 'Ver Perfil' }} />
       <Stack.Screen name={Routes} component={EditProfileScreen} options={{ title: 'Editar Perfil' }} /> */}
     </Stack.Navigator>

@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface IArquiveStore {
-    servico: IServicoArchive[]
+  servico: IServicoArchive[];
 }
 
 const initialState: IArquiveStore = {
-  servico: []
+  servico: [],
 };
 
 const arquivoSlice = createSlice({
@@ -15,9 +15,8 @@ const arquivoSlice = createSlice({
     resetClientArquivo: () => initialState,
 
     setServicoArquivo: (state, action: PayloadAction<IServicoArchive[]>) => {
-        state.servico = action.payload;
+      state.servico = action.payload;
     },
-
   },
 });
 

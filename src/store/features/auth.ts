@@ -41,7 +41,7 @@ const authSlice = createSlice({
     //   // state.usuario = action.payload.usuario;
     //   // state.token = action.payload.token;
     // },
-    /*   
+    /*
     setAuthBiometric: (state, action: PayloadAction<boolean>) => {
       state.authBiometrico = action.payload;
     }, */

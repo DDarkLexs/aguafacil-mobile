@@ -9,7 +9,7 @@ import { convertDateToString, convertToCurrency, convertToLitro } from 'app/util
 
 
 const ServicoDetailScreen: React.FC<
-NativeStackScreenProps<StackScreen, Routes.HISTORIC_CLIENT_SINGLE>
+  NativeStackScreenProps<StackScreen, Routes.HISTORIC_CLIENT_SINGLE>
 > = ({navigation, route}): React.JSX.Element => {
   const servico = route.params;
 
@@ -19,8 +19,11 @@ NativeStackScreenProps<StackScreen, Routes.HISTORIC_CLIENT_SINGLE>
         <Card.Title title={servico.titulo} />
         <Card.Content>
           <View style={styles.row}>
-            <Avatar.Image size={64} source={{ uri: servico.motorista.fotoPerfil }} />
-            <View style={{ marginLeft: 10 }}>
+            <Avatar.Image
+              size={64}
+              source={{uri: servico.motorista.fotoPerfil}}
+            />
+            <View style={{marginLeft: 10}}>
               <Title>{servico.motorista.usuario.nome}</Title>
               <Paragraph>{servico.motorista.localizacao}</Paragraph>
             </View>

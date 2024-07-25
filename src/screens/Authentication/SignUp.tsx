@@ -37,14 +37,12 @@ const RegisterScreen: React.FC<
       });
     }
     if (response.isError) {
-        showPrimaryToast({
-            img: require("../../assets/images/close.png"), // Certifique-se de que esta imagem existe
-            text1: "Erro",
-            text2: `${response.error}`,
-        });
-        
+      showPrimaryToast({
+        img: require('../../assets/images/close.png'), // Certifique-se de que esta imagem existe
+        text1: 'Erro',
+        text2: `${response.error}`,
+      });
     }
-
   }, [response]);
   // Combine o estado de carregamento de ambos os hooks
   //   const [loading, setLoading] = useState<boolean>(false);

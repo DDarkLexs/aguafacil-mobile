@@ -24,7 +24,7 @@ export const authApiSlice = createApi({
         url: '/auth/signup',
         method: 'POST',
         body: bodyData,
-        timeout: 10000
+        timeout: 10000,
       }),
       transformResponse: (response: IUserSignUpSuccess) => response,
       transformErrorResponse: (
@@ -86,4 +86,8 @@ export const authApiSlice = createApi({
   }),
 });
 
-export const {useSinUpClienteMutation, useAuthClienteMutation, useAuthMotoristaMutation} = authApiSlice;
+export const {
+  useSinUpClienteMutation,
+  useAuthClienteMutation,
+  useAuthMotoristaMutation,
+} = authApiSlice;

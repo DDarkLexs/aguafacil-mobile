@@ -1,26 +1,25 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Routes } from 'app/constants/enums';
-import { useAuth } from 'app/hooks/useAuth';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Routes} from 'app/constants/enums';
+import {useAuth} from 'app/hooks/useAuth';
 import Font from 'app/styles/Font';
 import Layout from 'app/styles/Layout';
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { TextInput, Button, useTheme } from 'react-native-paper';
+import {View, StyleSheet, Image} from 'react-native';
+import {TextInput, Button, useTheme} from 'react-native-paper';
 
 const ProfileScreen: React.FC<
-NativeStackScreenProps<StackScreen, Routes.CLIENT_EDIT_USER>
+  NativeStackScreenProps<StackScreen, Routes.CLIENT_EDIT_USER>
 > = ({navigation, route}): React.JSX.Element => {
   const theme = useTheme();
-  const { cliente } = useAuth()
+  const {cliente} = useAuth();
   const [name, setName] = React.useState(cliente?.usuario.nome);
   const [email, setEmail] = React.useState(cliente?.usuario.email);
   const [phone, setPhone] = React.useState(cliente?.usuario.telefone);
- 
 
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: cliente?.cliente.fotoPerfil }} // Substituir pela URL da foto de perfil
+        source={{uri: cliente?.cliente.fotoPerfil}} // Substituir pela URL da foto de perfil
         style={styles.profileImage}
       />
       <TextInput
@@ -46,7 +45,7 @@ NativeStackScreenProps<StackScreen, Routes.CLIENT_EDIT_USER>
         mode="outlined"
         keyboardType="phone-pad"
       />
-        <Button
+      <Button
         mode="contained"
         onPress={() => {}}
         style={[{...styles.button, borderRadius: theme.roundness}]}>
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginTop: 24,
     width: '100%',
-    borderRadius: Layout.radius
+    borderRadius: Layout.radius,
   },
 });
 

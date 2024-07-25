@@ -44,8 +44,10 @@ const HomeScreen: React.FC<
   const [searchQuery, setSearchQuery] = useState('');
   const apiResponde = useServicoAvaliableQuery();
   const {showErrorToast} = useAppToast();
+  const {showErrorToast} = useAppToast();
   useEffect(() => {
     if (apiResponde.isSuccess) {
+      setTrucks(apiResponde.data);
       setTrucks(apiResponde.data);
     }
     if (apiResponde.isError) {
@@ -53,12 +55,20 @@ const HomeScreen: React.FC<
         text1: 'Ocorreu um erro ao processar sua solicitação.',
         text2: JSON.stringify(apiResponde.error),
       });
+        text1: 'Ocorreu um erro ao processar sua solicitação.',
+        text2: JSON.stringify(apiResponde.error),
+      });
     }
+  }, [apiResponde]);
+
   }, [apiResponde]);
 
   const [trucks, setTrucks] = useState<IServicoAvaliable[]>([]);
 
   const filteredTrucks = trucks.filter(truck =>
+    truck.motorista.usuario.nome
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()),
     truck.motorista.usuario.nome
       .toLowerCase()
       .includes(searchQuery.toLowerCase()),

@@ -1,4 +1,4 @@
-import { Routes } from 'app/constants/enums';
+import {Routes} from 'app/constants/enums';
 import {createStackNavigator, useTheme} from 'app/modules/index';
 import LoginScreen from 'app/screens/Authentication/Login';
 import RegisterScreen from 'app/screens/Authentication/SignUp';
@@ -18,9 +18,7 @@ const AuthStack: React.FC = (): React.JSX.Element => {
         screenOptions={{
           headerShown: false,
           contentStyle: {backgroundColor: theme.colors.background},
-        }}
-
-        >
+        }}>
         <Stack.Screen name={Routes.LOGIN} component={LoginScreen} />
         <Stack.Screen name={Routes.REGISTER} component={RegisterScreen} />
       </Stack.Group>
