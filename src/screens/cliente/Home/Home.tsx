@@ -1,53 +1,67 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Routes } from 'app/constants/enums';
+import { useAppNavigation } from 'app/hooks/useNavigation';
 import { useAppToast } from 'app/hooks/useToast';
 import { useServicoAvaliableQuery } from 'app/store/api/cliente/servico';
 import Layout from 'app/styles/Layout';
 import { convertToCurrency } from 'app/utils';
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
-import {Avatar, Button, Card, Text, TextInput} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import { Avatar, Button, Card, Text, TextInput } from 'react-native-paper';
 
+const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
 
-const TruckCard: React.FC<{ truck: IServicoAvaliable }> = ({ truck }) => (
-  <Card style={styles.card}>
-    <Card.Title
-      title={truck.motorista.usuario.nome}
-      subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${truck.litroAgua}L`}
-      left={(props) => <Avatar.Image {...props} source={{ uri: truck.motorista.fotoPerfil }} />}
-    />
-    <Card.Content>
-      <Text>{truck.descricao}</Text>
-    </Card.Content>
-    <Card.Actions>
-      <Button mode="contained" style={{ borderRadius: Layout.radius }} onPress={() => console.log('Chamar Agora')}>
-        Chamar Agora
-      </Button>
-    </Card.Actions>
-  </Card>
-);
+  const navigation = useAppNavigation();
+  return (
+    <Card style={styles.card}>
+      <Card.Title
+        title={truck.motorista.usuario.nome}
+        subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${
+          truck.litroAgua
+        }L`}
+        left={props => (
+          <Avatar.Image {...props} source={{uri: truck.motorista.fotoPerfil}} />
+        )}
+      />
+      <Card.Content>
+        <Text>{truck.descricao}</Text>
+      </Card.Content>
+      <Card.Actions>
+        <Button
+          mode="contained"
+          style={{borderRadius: Layout.radius}}
+          onPress={() => navigation.navigate(Routes.CLIENT_PAYMENT_METHOD, truck)}>
+          Chamar Agora
+        </Button>
+      </Card.Actions>
+    </Card>
+  );
+};
 
-const HomeScreen: React.FC = () => {
+const HomeScreen: React.FC<
+  NativeStackScreenProps<StackScreen, Routes.CLIENT_SERVICE_AVAILABLE>
+> = ({navigation, route}): React.JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
   const apiResponde = useServicoAvaliableQuery();
-  const { showErrorToast } = useAppToast()
+  const {showErrorToast} = useAppToast();
   useEffect(() => {
     if (apiResponde.isSuccess) {
-      
-      setTrucks(apiResponde.data)
+      setTrucks(apiResponde.data);
     }
     if (apiResponde.isError) {
       showErrorToast({
-          text1:"Ocorreu um erro ao processar sua solicitação.",
-          text2: JSON.stringify(apiResponde.error)
-      })
-      
+        text1: 'Ocorreu um erro ao processar sua solicitação.',
+        text2: JSON.stringify(apiResponde.error),
+      });
     }
-  
-  }, [apiResponde])
-  
+  }, [apiResponde]);
+
   const [trucks, setTrucks] = useState<IServicoAvaliable[]>([]);
 
   const filteredTrucks = trucks.filter(truck =>
-    truck.motorista.usuario.nome.toLowerCase().includes(searchQuery.toLowerCase()),
+    truck.motorista.usuario.nome
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()),
   );
 
   return (
