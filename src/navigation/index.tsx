@@ -5,8 +5,8 @@ import {StatusBar, useColorScheme} from 'react-native';
 import {NavigationContainer, useTheme} from '../modules/index';
 // import {setRoutePath} from '../store/features/app';
 import {useAuth} from 'app/hooks/useAuth';
-import AuthStack from 'app/navigation/stack/Authstack';
-import ClientTabNavigator from 'app/navigation/stack/ClientStack';
+import AuthStack from 'app/navigation/stack/authstack';
+import ClientTabNavigator from 'app/navigation/stack/clientStack';
 import {dark, light} from 'app/styles/Theme';
 // import MainStack from './Stack/MainStack';
 

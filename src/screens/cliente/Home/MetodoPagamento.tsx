@@ -1,5 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Routes} from 'app/constants/enums';
+import { useAuth } from 'app/hooks/useAuth';
 import Layout from 'app/styles/Layout';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
@@ -17,19 +18,22 @@ const MetodoPagamentoScreen: React.FC<
 > = ({navigation, route}): React.JSX.Element => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     React.useState<string>('');
+  const data = route.params;
+  const {user} = useAuth();
 
+  
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.label}>Minha localização</Text>
         <Text style={styles.value}>
-          2972 Westheimer Rd. Santa Ana, Illinois 85486
+         {data.motorista.localizacao}
         </Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.label}>Motorista</Text>
+        <Text style={styles.label}>Endereço de motorisa</Text>
         <Text style={styles.value}>
-          1901 Thornridge Cir. Shiloh, Hawaii 81063
+        {data.motorista.localizacao}
         </Text>
         <Text style={styles.distance}>1.1km</Text>
       </View>
