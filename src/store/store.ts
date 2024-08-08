@@ -12,6 +12,8 @@ import {
 import {authApiSlice} from './api/auth';
 import {clientServiceApiSlice} from './api/cliente/servico';
 import {locationApiSlice} from './api/location';
+// import {socketMiddleware, socketReducer} from './features/socket.reducer';
+
 const rootReducer = combineReducers({
   auth: authSlice,
   clientArquivo: clientearquivoSlice,
@@ -39,6 +41,7 @@ export const store = configureStore({
       authApiSlice.middleware,
       clientServiceApiSlice.middleware,
       locationApiSlice.middleware,
+      // socketMiddleware
     ),
 });
 
