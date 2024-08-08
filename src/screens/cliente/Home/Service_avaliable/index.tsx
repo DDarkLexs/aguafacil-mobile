@@ -1,9 +1,8 @@
 // src/navigation/ProfileNavigator.tsx
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import Home from './Home';
+import Home from '../Home';
 import { Routes } from 'app/constants/enums';
-import MetodoPagamentoScreen from './MetodoPagamento';
 
 const Stack = createStackNavigator<StackScreen>();
 
@@ -15,11 +14,7 @@ const HomeStack = () => {
         component={Home}
         options={{title: 'Principal'}}
       />
-      <Stack.Screen
-        name={Routes.CLIENT_PAYMENT_METHOD}
-        component={MetodoPagamentoScreen}
-        options={{title: 'Método de Pagamento'}}
-      />
+
 {/*       <Stack.Screen
         name={Routes.CLIENT_EDIT_USER}
         component={EditProfileScreen}

@@ -1,79 +1,21 @@
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {Routes} from 'app/constants/enums';
-import HistoricoScreen from 'app/screens/cliente/Historico/Index';
-import HomeStack from 'app/screens/cliente/Home';
-// import HomeScreen from 'app/screens/cliente/Home/Home';
-import ProfileNavigator from 'app/screens/cliente/Perfil/Index';
-import ProfileScreen from 'app/screens/cliente/Perfil/Profile';
-import React from 'react';
-import {Icon, useTheme} from 'react-native-paper';
+// src/navigation/ProfileNavigator.tsx
+import {createStackNavigator} from '@react-navigation/stack';
+import * as React from 'react';
+import HomeBottomTab from 'app/screens/cliente/Home/main';
+import TruckOrderStack from 'app/screens/cliente/TruckOrder';
 
-const Tab = createMaterialBottomTabNavigator<StackScreen>();
+const Stack = createStackNavigator<StackScreen>();
 
-const BottomTabsCliente: React.FC = () => {
-  const theme = useTheme();
-  const MyTheme = {
-    dark: false,
-    colors: {
-      primary: 'rgb(255, 45, 85)',
-      background: 'rgb(242, 242, 242)',
-      card: 'rgb(255, 255, 255)',
-      text: 'rgb(28, 28, 30)',
-      border: 'rgb(199, 199, 204)',
-      notification: 'rgb(255, 69, 58)',
-    },
-  };
+const ClientStack = () => {
   return (
-    <Tab.Navigator
-      initialRouteName={Routes.CLIENT_HOME}
-      shifting={true}
-      activeColor={theme.colors.primary}
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color}) => {
-          let iconName: string;
+    <Stack.Navigator 
+    screenOptions={{headerShown: false}}
+    initialRouteName={Routes.CLIENT_HOME}>
+      <Stack.Screen name={Routes.CLIENT_HOME} component={HomeBottomTab} />
+      <Stack.Screen name={Routes.CLIENT_TRUCK_ORDER} component={TruckOrderStack} />
 
-          switch (route.name) {
-            case Routes.CLIENT_HOME:
-              iconName = 'home';
-              break;
-            case Routes.CLIENT_EDIT_USER:
-              iconName = 'account';
-              break;
-            default:
-              iconName = 'circle';
-              break;
-          }
-
-          return (
-            <Icon source={iconName} size={24} color={theme.colors.background} />
-          );
-        },
-        tabBarColor: theme.colors.background,
-      })}
-      sceneAnimationEnabled={true}>
-      <Tab.Screen
-        name={Routes.CLIENT_HOME}
-        component={HomeStack}
-        options={{
-          tabBarLabel: 'Home',
-        }}
-      />
-      <Tab.Screen
-        name={Routes.HISTORIC_STACK_CLIENT}
-        component={HistoricoScreen}
-        options={{
-          tabBarLabel: 'Histórico',
-        }}
-      />
-      <Tab.Screen
-        name={Routes.CLIENT_USER_STACK}
-        component={ProfileNavigator}
-        options={{
-          tabBarLabel: 'Perfil',
-        }}
-      />
-    </Tab.Navigator>
+    </Stack.Navigator>
   );
 };
 
-export default BottomTabsCliente;
+export default ClientStack;

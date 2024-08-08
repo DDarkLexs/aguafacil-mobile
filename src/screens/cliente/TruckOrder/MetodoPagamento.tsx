@@ -19,7 +19,7 @@ const MetodoPagamentoScreen: React.FC<
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     React.useState<string>('');
   const data = route.params;
-  const {user} = useAuth();
+  const {cliente} = useAuth();
 
   
   return (
