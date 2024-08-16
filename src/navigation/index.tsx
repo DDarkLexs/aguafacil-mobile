@@ -6,8 +6,8 @@ import {NavigationContainer, useTheme} from '../modules/index';
 // import {setRoutePath} from '../store/features/app';
 import {useAuth} from 'app/hooks/useAuth';
 import AuthStack from 'app/navigation/stack/authstack';
-import ClientNavigator from 'app/navigation/stack/clientStack';
 import {dark, light} from 'app/styles/Theme';
+import ClientStack from './stack/ClientStack';
 // import MainStack from './Stack/MainStack';
 
 const AppNavigator: React.FC<any> = (): React.JSX.Element => {
@@ -39,7 +39,7 @@ const AppNavigator: React.FC<any> = (): React.JSX.Element => {
 
         // theme={navigationTheme}
       >
-        {!token ? <AuthStack /> : cliente ? <ClientNavigator /> : null}
+        {!token ? <AuthStack /> : cliente ? <ClientStack /> : null}
       </NavigationContainer>
     </>
   );

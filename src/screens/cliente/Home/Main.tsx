@@ -10,7 +10,7 @@ import {Icon, useTheme} from 'react-native-paper';
 
 const Tab = createMaterialBottomTabNavigator<StackScreen>();
 
-const HomeBottomTab: React.FC = () => {
+const HomeBottomTabStack: React.FC = () => {
   const theme = useTheme();
   const MyTheme = {
     dark: false,
@@ -76,4 +76,4 @@ const HomeBottomTab: React.FC = () => {
   );
 };
 
-export default HomeBottomTab;
+export default HomeBottomTabStack;

@@ -3,6 +3,7 @@ declare type StackScreen = {
   [Routes.LOGIN]: undefined;
   [Routes.REGISTER]: IUserSignUpProp;
   [Routes.CLIENT_HOME]: undefined;
+  [Routes.CLIENT_TAB_BOTTOM_HOME]: undefined;
   [Routes.CLIENT_TRUCK_ORDER]: undefined;
   [Routes.CLIENT_PAYMENT_METHOD]: IServicoAvaliable;
   [Routes.CLIENT_SERVICE_AVAILABLE]: undefined;
