@@ -6,7 +6,8 @@ declare type StackScreen = {
   [Routes.CLIENT_TAB_BOTTOM_HOME]: undefined;
   [Routes.CLIENT_TRUCK_ORDER]: IServicoAvaliable;
   [Routes.CLIENT_PAYMENT_METHOD]: IServicoAvaliable;
-  [Routes.CLIENT_WAITING_ORDER]: undefined;
+  [Routes.CLIENT_WAITING_ORDER]: IServicoSolicitado;
+  [Routes.CLIENT_SERVICE_CONFIRMED]: IServicoSolicitado;
   [Routes.CLIENT_SERVICE_AVAILABLE]: undefined;
   [Routes.CLIENT_USER_STACK]: undefined;
   [Routes.CLIENT_EDIT_USER]: undefined;
@@ -15,6 +16,5 @@ declare type StackScreen = {
   [Routes.HISTORIC_CLIENT]: undefined; 
   [Routes.HISTORIC_STACK_CLIENT]: undefined; 
   [Routes.CLIENT_CONFIGURATION]: undefined;
-  [Routes.CLIENT_SERVICE_CONFIRMED]: undefined;
   // [Routes.EDIT_ARTIGO]: IEditArtigoDto;
 };

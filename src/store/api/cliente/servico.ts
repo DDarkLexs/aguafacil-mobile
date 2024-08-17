@@ -42,6 +42,16 @@ export const clientServiceApiSlice = createApi({
         return error;
       },
     }),
+    solicitarService: builder.mutation<IServicoSolicitado, ISolicitarService>({
+      query: bodyData => ({
+        url: `/solicitacao/${bodyData.servicoId}`,
+        method: 'POST',
+        body: {
+          coordenada: bodyData.coordenada
+        },
+        timeout: 10000,
+      }),
+    }),
     historicService: builder.query<IServicoArchive[], void>({
       query: bodyData => ({
         url: '/solicitacao/historico',
@@ -67,4 +77,4 @@ export const clientServiceApiSlice = createApi({
   }),
 });
 
-export const {useServicoAvaliableQuery, useHistoricServiceQuery} = clientServiceApiSlice;
+export const {useServicoAvaliableQuery, useHistoricServiceQuery, useSolicitarServiceMutation} = clientServiceApiSlice;

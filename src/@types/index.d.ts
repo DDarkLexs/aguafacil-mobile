@@ -89,3 +89,9 @@ interface IServicoArchive extends IServicoSolicitado {
     usuario: IUsuario;
   };
 }
+
+
+interface ISolicitarService {
+  coordenada: string;
+  servicoId: number;
+}

@@ -1,30 +1,58 @@
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Text } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import io from 'socket.io-client';
+import {useAuth} from 'app/hooks/useAuth';
+import React, {useEffect, useRef} from 'react';
+import {Animated, StyleSheet, View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import {useSocket} from '../../../hooks/useSocket';
+import { useAppNavigation } from 'app/hooks/useNavigation';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Routes } from 'app/constants/enums';
+import { useAppToast } from 'app/hooks/useToast';
 
-const WaitingScreen = () => {
+const WaitingScreen: React.FC<
+NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
+> = ({navigation, route}): React.JSX.Element => {
   const scaleAnim = useRef(new Animated.Value(1)).current; // Escala inicial da animação
-  const socket = useRef<any>(null);
+  const {socket, connectSocket, disconnectSocket, turnOnConnection} =
+    useSocket();
+    const {showPrimaryToast} = useAppToast();
+  const {cliente, token} = useAuth();
+  useEffect(() => {
+    // if (socket && step <= 4) {
+    //   disconnectSocket();
+    //   console.log('====================================');
+    //   console.log('socket.IO esta desligado!');
+    //   console.log('====================================');
+    // }
+
+    if (!socket.socket && cliente) {
+      // console.log("tentando se conectar ao socket");
+      connectSocket(Number(cliente?.cliente.id), String(token));
+    }
+
+    if (socket && !socket.isConnected) {
+      turnOnConnection();
+    }
+  }, []);
 
   useEffect(() => {
-    // Conectar ao servidor via socket.io
-    socket.current = io('http://your-server-url'); // Substitua pela URL do seu servidor
+    if (socket && socket.isConnected) {
+      socket.socket?.on('motoristaAceitaSolicitacao', (solicitacao: IServicoSolicitado) => {
+        showPrimaryToast({
+          text1: 'Solicitação aceita',
+          text2: 'Sua solicitação foi aceita pelo motorista',
+          img: require('../../../assets/images/checked.png'),
+        })
+        navigation.navigate(Routes.CLIENT_SERVICE_CONFIRMED, solicitacao);
+      });
+    }
 
-    socket.current.on('connect', () => {
-      console.log('Conectado ao servidor');
-    });
-
-    socket.current.on('driverAccepted', (data: any) => {
-      console.log('Motorista aceitou:', data);
-      // Aqui você pode navegar para outra tela ou fazer outra ação necessária
-    });
-
-    // Limpeza na desmontagem
     return () => {
-      socket.current?.disconnect();
+      // Unsubscribe from socket events when the component unmounts
+      if (socket) {
+        socket.socket?.off('motoristaAceitaSolicitacao');
+      }
     };
-  }, []);
+  }, [socket, socket.isConnected]);
 
   useEffect(() => {
     // Configuração da animação
@@ -46,7 +74,8 @@ const WaitingScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Animated.Text style={[styles.waitingText, { transform: [{ scale: scaleAnim }] }]}>
+      <Animated.Text
+        style={[styles.waitingText, {transform: [{scale: scaleAnim}]}]}>
         Esperando o motorista aceitar...
       </Animated.Text>
       <ActivityIndicator size="large" style={styles.indicator} />

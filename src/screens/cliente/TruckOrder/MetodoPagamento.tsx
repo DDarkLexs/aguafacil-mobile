@@ -1,7 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Routes} from 'app/constants/enums';
 import { useAuth } from 'app/hooks/useAuth';
+import { useAppToast } from 'app/hooks/useToast';
+import { useSolicitarServiceMutation } from 'app/store/api/cliente/servico';
 import Layout from 'app/styles/Layout';
+import { getMyLocation } from 'app/utils/location';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
@@ -19,8 +22,26 @@ const MetodoPagamentoScreen: React.FC<
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     React.useState<string>('');
   const data = route.params;
-  const {cliente} = useAuth();
-
+  const {cliente, token} = useAuth();
+  const [solicitarService, {isLoading}] = useSolicitarServiceMutation();
+  const { showErrorToast } = useAppToast()
+  const fazerSolicitacao = async () => {
+    try {
+      const {latitude, longitude} = await getMyLocation();
+      const response = await solicitarService({
+        servicoId: route.params.id,
+        coordenada: `${latitude},${longitude}`,
+      }).unwrap();
+      navigation.navigate(Routes.CLIENT_WAITING_ORDER, response);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      showErrorToast({
+        text1:'Erro ao solicitar o serviço',
+        text2:'Por favor tente novamente',
+      });
+    }
+  }
   
   return (
     <ScrollView style={styles.container}>
@@ -53,19 +74,24 @@ const MetodoPagamentoScreen: React.FC<
       <Text style={styles.label}>Selecione o meio de pagamento</Text>
       <RadioButton.Group
         onValueChange={value => setSelectedPaymentMethod(value)}
+      
         value={selectedPaymentMethod}>
         <View style={styles.paymentMethod}>
-          <RadioButton value="visa" />
+          <RadioButton 
+          disabled={isLoading}
+          value="Multicaixa" />
           <Text>Multicaixa</Text>
         </View>
         <View style={styles.paymentMethod}>
-          <RadioButton value="mastercard" />
+          <RadioButton disabled={isLoading} value="Numerário" />
           <Text>Numerário</Text>
         </View>
       </RadioButton.Group>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate(Routes.CLIENT_WAITING_ORDER)}
+        onPress={fazerSolicitacao}
+        loading={isLoading}
+        disabled={selectedPaymentMethod === '' || isLoading}
         style={[{...styles.button, borderRadius: Layout.radius}]}>
         Confirmar solicitação
       </Button>

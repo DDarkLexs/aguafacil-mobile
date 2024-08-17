@@ -54,9 +54,9 @@ interface ConnectPayload {
 
 export const socketMiddleware: Middleware =
   () => (next: any) => (action: any) => {
+    console.log(action.type);
     if (action.type === 'socket/connect') {
       const {solicitacaoId, token} = action.payload as ConnectPayload;
-
       const socket = io(URL, {
         transports: ['polling', 'websocket'],
         auth: {
@@ -77,7 +77,6 @@ export const socketMiddleware: Middleware =
         console.log(err);
         // console.log('Conectado ao servidor Socket.IO');
       });
-
       socket.on('disconnect', () => {
         console.log('Desconectado do servidor Socket.IO');
       });
@@ -86,7 +85,6 @@ export const socketMiddleware: Middleware =
     } else if (action.type === 'socket/disconnect') {
       next(disconnectSocket()); // Chama a action para desconectar o socket
     }
-
     // adicione outras lógicas aqui para lidar com as interações do socket.io
 
     return next(action);

@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: '@AGUAFACIL',
   storage: AsyncStorage,
-  whitelist: ['auth','socket', 'clientArquivo'], // Os reducers que você quer persistir
+  whitelist: ['auth', 'clientArquivo'], // Os reducers que você quer persistir
 };
 
 const persistedReducer = persistReducer({...persistConfig}, rootReducer);
@@ -42,7 +42,7 @@ export const store = configureStore({
       authApiSlice.middleware,
       clientServiceApiSlice.middleware,
       locationApiSlice.middleware,
-      socketMiddleware
+      socketMiddleware,
     ),
 });
 

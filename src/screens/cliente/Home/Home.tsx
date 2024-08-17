@@ -35,7 +35,7 @@ const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
           onPress={() =>
             navigation.navigate(Routes.CLIENT_TRUCK_ORDER, truck)
           }> 
-          Chamar Agora
+          Solicitar
         </Button>
       </Card.Actions>
     </Card>
