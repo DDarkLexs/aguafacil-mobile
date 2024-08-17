@@ -33,8 +33,8 @@ const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
           mode="contained"
           style={{borderRadius: Layout.radius}}
           onPress={() =>
-            navigation.navigate(Routes.CLIENT_PAYMENT_METHOD, truck)
-          }>
+            navigation.navigate(Routes.CLIENT_TRUCK_ORDER, truck)
+          }> 
           Chamar Agora
         </Button>
       </Card.Actions>

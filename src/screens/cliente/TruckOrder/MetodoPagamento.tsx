@@ -65,7 +65,7 @@ const MetodoPagamentoScreen: React.FC<
       </RadioButton.Group>
       <Button
         mode="contained"
-        onPress={() => console.log('Booking confirmed')}
+        onPress={() => navigation.navigate(Routes.CLIENT_WAITING_ORDER)}
         style={[{...styles.button, borderRadius: Layout.radius}]}>
         Confirmar solicitação
       </Button>

@@ -4,8 +4,9 @@ declare type StackScreen = {
   [Routes.REGISTER]: IUserSignUpProp;
   [Routes.CLIENT_HOME]: undefined;
   [Routes.CLIENT_TAB_BOTTOM_HOME]: undefined;
-  [Routes.CLIENT_TRUCK_ORDER]: undefined;
+  [Routes.CLIENT_TRUCK_ORDER]: IServicoAvaliable;
   [Routes.CLIENT_PAYMENT_METHOD]: IServicoAvaliable;
+  [Routes.CLIENT_WAITING_ORDER]: undefined;
   [Routes.CLIENT_SERVICE_AVAILABLE]: undefined;
   [Routes.CLIENT_USER_STACK]: undefined;
   [Routes.CLIENT_EDIT_USER]: undefined;

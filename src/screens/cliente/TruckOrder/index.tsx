@@ -5,6 +5,7 @@ import {Routes} from 'app/constants/enums';
 import * as React from 'react';
 import LocationConfirmScreen from './LocationConfirm';
 import MetodoPagamentoScreen from './MetodoPagamento';
+import WaitingScreen from './WaitingScreen';
 
 const Stack = createStackNavigator<StackScreen>();
 
@@ -16,7 +17,13 @@ const TruckOrderStack: React.FC<
       <Stack.Screen
         name={Routes.CLIENT_PAYMENT_METHOD}
         component={MetodoPagamentoScreen}
+        initialParams={route.params}
         options={{title: 'Método de Pagamento'}}
+      />
+      <Stack.Screen
+        name={Routes.CLIENT_WAITING_ORDER}
+        component={WaitingScreen}
+        options={{title: 'Aguardando motorista'}}
       />
       <Stack.Screen
         name={Routes.CLIENT_SERVICE_CONFIRMED}
