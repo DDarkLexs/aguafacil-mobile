@@ -7,7 +7,7 @@ export const useSocket = () => {
   const dispatch = useAppDispatch();
   const isConnected = useAppSelector(state => state.socket.isConnected);
 
-  const connectSocket = (id_user: number, id_corrida: number) => {
+  const connectSocket = (solicitacaoId: number, token: string) => {
     if (socket) {
       console.log('====================================');
       console.log('tentando se conectar ao socket');
@@ -15,8 +15,8 @@ export const useSocket = () => {
       dispatch({
         type: 'socket/connect',
         payload: {
-          id_user,
-          id_corrida,
+          solicitacaoId,
+          token,
         },
       });
     }
