@@ -2,7 +2,7 @@ import moment from 'moment';
 import numeral from 'numeral';
 
 export const convertToCurrency = (number: number): string => {
-  const formattedCurrency = Intl.NumberFormat('pt-AO', {
+  const formattedCurrency =Intl.NumberFormat('pt-AO', {
     style: 'currency',
     currency: 'AOA',
     notation: 'compact',

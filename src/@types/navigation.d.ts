@@ -7,7 +7,7 @@ declare type StackScreen = {
   [Routes.CLIENT_TRUCK_ORDER]: IServicoAvaliable;
   [Routes.CLIENT_PAYMENT_METHOD]: IServicoAvaliable;
   [Routes.CLIENT_WAITING_ORDER]: IServicoSolicitado;
-  [Routes.CLIENT_SERVICE_CONFIRMED]: IServicoSolicitado;
+  [Routes.CLIENT_SERVICE_CONFIRMED]: undefined;
   [Routes.CLIENT_SERVICE_AVAILABLE]: undefined;
   [Routes.CLIENT_USER_STACK]: undefined;
   [Routes.CLIENT_EDIT_USER]: undefined;

@@ -60,6 +60,7 @@ interface IServicoSolicitado {
   motorista: IMotorista;
 }
 
+
 interface IAvaliacao {
   id: number;
   clienteId: number;

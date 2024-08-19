@@ -8,6 +8,7 @@ interface SocketState {
   isConnected: boolean;
   messages: IMessage[];
   loading: boolean;
+  
   // outros campos de estado relacionados ao socket
 }
 

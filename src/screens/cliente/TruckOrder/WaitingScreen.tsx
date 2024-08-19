@@ -1,20 +1,22 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Routes} from 'app/constants/enums';
 import {useAuth} from 'app/hooks/useAuth';
+import {useAppDispatch} from 'app/hooks/useRedux';
+import {useAppToast} from 'app/hooks/useToast';
+import {setServicoEmCurso} from 'app/store/features/cliente/arquivo';
 import React, {useEffect, useRef} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {useSocket} from '../../../hooks/useSocket';
-import { useAppNavigation } from 'app/hooks/useNavigation';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Routes } from 'app/constants/enums';
-import { useAppToast } from 'app/hooks/useToast';
 
 const WaitingScreen: React.FC<
-NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
+  NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
 > = ({navigation, route}): React.JSX.Element => {
   const scaleAnim = useRef(new Animated.Value(1)).current; // Escala inicial da animação
   const {socket, connectSocket, disconnectSocket, turnOnConnection} =
     useSocket();
-    const {showPrimaryToast} = useAppToast();
+  const dispatch = useAppDispatch();
+  const {showPrimaryToast} = useAppToast();
   const {cliente, token} = useAuth();
   useEffect(() => {
     // if (socket && step <= 4) {
@@ -26,7 +28,7 @@ NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
 
     if (!socket.socket && cliente) {
       // console.log("tentando se conectar ao socket");
-      connectSocket(Number(cliente?.cliente.id), String(token));
+      connectSocket(Number(route.params.id), String(token));
     }
 
     if (socket && !socket.isConnected) {
@@ -36,13 +38,27 @@ NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
 
   useEffect(() => {
     if (socket && socket.isConnected) {
-      socket.socket?.on('motoristaAceitaSolicitacao', (solicitacao: IServicoSolicitado) => {
+      socket.socket?.on(
+        'motoristaAceitaSolicitacao',
+        (data: IMotoristaAceitaSolicitacaoResponse) => {
+          showPrimaryToast({
+            text1: 'Solicitação aceita',
+            text2: 'Sua solicitação foi aceita pelo motorista',
+            img: require('../../../assets/images/checked.png'),
+          });
+          dispatch(setServicoEmCurso(data));
+          // console.log(data);
+          navigation.navigate(Routes.CLIENT_SERVICE_CONFIRMED);
+        },
+      );
+      socket.socket?.on('motoristaRecusaSolicitacao', (data: any) => {
         showPrimaryToast({
-          text1: 'Solicitação aceita',
-          text2: 'Sua solicitação foi aceita pelo motorista',
+          text1: 'Solicitação recusada',
+          text2: 'Sua solicitação foi recusada',
           img: require('../../../assets/images/checked.png'),
-        })
-        navigation.navigate(Routes.CLIENT_SERVICE_CONFIRMED, solicitacao);
+        });
+        disconnectSocket();
+        navigation.navigate(Routes.CLIENT_HOME);
       });
     }
 
@@ -50,6 +66,7 @@ NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
       // Unsubscribe from socket events when the component unmounts
       if (socket) {
         socket.socket?.off('motoristaAceitaSolicitacao');
+        socket.socket?.off('motoristaRecusaSolicitacao');
       }
     };
   }, [socket, socket.isConnected]);
@@ -60,12 +77,12 @@ NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
       Animated.sequence([
         Animated.timing(scaleAnim, {
           toValue: 1.2,
-          duration: 500,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
           toValue: 1,
-          duration: 500,
+          duration: 1000,
           useNativeDriver: true,
         }),
       ]),

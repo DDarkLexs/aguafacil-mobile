@@ -28,7 +28,7 @@ const TruckOrderStack: React.FC<
       <Stack.Screen
         name={Routes.CLIENT_SERVICE_CONFIRMED}
         component={LocationConfirmScreen}
-        options={{title: 'Motorista à caminho', headerLeft: null}}
+        options={{title: 'Motorista à caminho', headerLeft: () => null}}
       />
     </Stack.Navigator>
   );
