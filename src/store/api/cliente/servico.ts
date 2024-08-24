@@ -42,7 +42,7 @@ export const clientServiceApiSlice = createApi({
         return error;
       },
     }),
-    solicitarService: builder.mutation<IServicoSolicitado, ISolicitarService>({
+    solicitarService: builder.mutation<ICreatedServicoSolicitado, ISolicitarService>({
       query: bodyData => ({
         url: `/solicitacao/${bodyData.servicoId}`,
         method: 'POST',

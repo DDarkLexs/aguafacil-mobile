@@ -4,10 +4,11 @@ import {useAuth} from 'app/hooks/useAuth';
 import {useAppDispatch} from 'app/hooks/useRedux';
 import {useAppToast} from 'app/hooks/useToast';
 import {setServicoEmCurso} from 'app/store/features/cliente/arquivo';
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Button} from 'react-native-paper';
 import {useSocket} from '../../../hooks/useSocket';
+import Layout from 'app/styles/Layout';
 
 const WaitingScreen: React.FC<
   NativeStackScreenProps<StackScreen, Routes.CLIENT_WAITING_ORDER>
@@ -70,6 +71,19 @@ const WaitingScreen: React.FC<
       }
     };
   }, [socket, socket.isConnected]);
+  const cancelarSolicitacao = useCallback(() => {
+    if (socket.socket && socket.isConnected) {
+      socket.socket.emit('clienteCancelaSolicitacao');
+      disconnectSocket();
+      showPrimaryToast({
+        text1: 'Solicitação cancelada',
+        text2: 'Sua solicitação foi cancelada',
+        img: require('../../../assets/images/checked.png'),
+      });
+      navigation.navigate(Routes.CLIENT_HOME);
+      
+    }
+  },[])
 
   useEffect(() => {
     // Configuração da animação
@@ -96,6 +110,11 @@ const WaitingScreen: React.FC<
         Esperando o motorista aceitar...
       </Animated.Text>
       <ActivityIndicator size="large" style={styles.indicator} />
+      <View style={{marginTop: 20}}>
+        <Button style={{borderRadius: Layout.radius}} mode="contained" onPress={cancelarSolicitacao}>
+          Cancelar Solicitação
+        </Button>
+      </View>
     </View>
   );
 };

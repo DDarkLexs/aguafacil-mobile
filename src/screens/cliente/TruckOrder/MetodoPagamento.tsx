@@ -1,10 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Routes} from 'app/constants/enums';
-import { useAuth } from 'app/hooks/useAuth';
-import { useAppToast } from 'app/hooks/useToast';
-import { useSolicitarServiceMutation } from 'app/store/api/cliente/servico';
+import {useAuth} from 'app/hooks/useAuth';
+import {useAppToast} from 'app/hooks/useToast';
+import {useSolicitarServiceMutation} from 'app/store/api/cliente/servico';
 import Layout from 'app/styles/Layout';
-import { getMyLocation } from 'app/utils/location';
+import {getMyLocation} from 'app/utils/location';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
@@ -24,7 +24,7 @@ const MetodoPagamentoScreen: React.FC<
   const data = route.params;
   const {cliente, token} = useAuth();
   const [solicitarService, {isLoading}] = useSolicitarServiceMutation();
-  const { showErrorToast } = useAppToast()
+  const {showErrorToast} = useAppToast();
   const fazerSolicitacao = async () => {
     try {
       const {latitude, longitude} = await getMyLocation();
@@ -37,25 +37,21 @@ const MetodoPagamentoScreen: React.FC<
     } catch (error) {
       console.log(error);
       showErrorToast({
-        text1:'Erro ao solicitar o serviço',
-        text2:'Por favor tente novamente',
+        text1: 'Erro ao solicitar o serviço',
+        text2: 'Por favor tente novamente',
       });
     }
-  }
-  
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.label}>Minha localização</Text>
-        <Text style={styles.value}>
-         {data.motorista.localizacao}
-        </Text>
+        <Text style={styles.value}>{data.motorista.localizacao}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.label}>Endereço de motorisa</Text>
-        <Text style={styles.value}>
-        {data.motorista.localizacao}
-        </Text>
+        <Text style={styles.value}>{data.motorista.localizacao}</Text>
         <Text style={styles.distance}>1.1km</Text>
       </View>
       <View style={styles.section}>
@@ -74,12 +70,9 @@ const MetodoPagamentoScreen: React.FC<
       <Text style={styles.label}>Selecione o meio de pagamento</Text>
       <RadioButton.Group
         onValueChange={value => setSelectedPaymentMethod(value)}
-      
         value={selectedPaymentMethod}>
         <View style={styles.paymentMethod}>
-          <RadioButton 
-          disabled={isLoading}
-          value="Multicaixa" />
+          <RadioButton disabled={isLoading} value="Multicaixa" />
           <Text>Multicaixa</Text>
         </View>
         <View style={styles.paymentMethod}>

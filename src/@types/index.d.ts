@@ -32,6 +32,8 @@ interface ICliente {
   // usuario: usuario;
 }
 
+
+
 interface IServicoMotorista {
   id: number;
   titulo: string;
@@ -56,10 +58,33 @@ interface IServicoSolicitado {
   motoristaId: number;
   created: Date;
   updated: Date;
+}
+interface ICreatedServicoSolicitado {
+  id: number;
+  titulo: string;
+  descricao?: string;
+  litroAgua: number;
+  preco: number;
+  status: ServicoStatus;
+  coordenada: string;
+  dataConclusao?: Date;
+  clienteId: number;
+  motoristaId: number;
+  created: Date;
+  updated: Date;
   cliente: ICliente;
   motorista: IMotorista;
+  SSCoordenada: SSCoordenada[];
 }
 
+interface ISSCoordenada {
+  id: number;
+  coordenada: string;  // Consider renaming 'cordenada' to 'coordenada' for consistency
+  endereco: string;
+  created: string;     // You could also use Date if you want to handle dates as Date objects
+  updated: string;     // Same as above
+  servicoSolicitadoId: number;
+}
 
 interface IAvaliacao {
   id: number;
