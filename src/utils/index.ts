@@ -1,8 +1,14 @@
+import {getDistance} from 'geolib';
 import moment from 'moment';
 import numeral from 'numeral';
 
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
 export const convertToCurrency = (number: number): string => {
-  const formattedCurrency =Intl.NumberFormat('pt-AO', {
+  const formattedCurrency = Intl.NumberFormat('pt-AO', {
     style: 'currency',
     currency: 'AOA',
     notation: 'compact',
@@ -73,7 +79,6 @@ export const convertToLitro = (num: number): string => {
   return numeral(num).format(format);
 };
 
-
 // fetchLocationData.js
 
 /**
@@ -82,22 +87,87 @@ export const convertToLitro = (num: number): string => {
  * @param {number} longitude - Longitude para a busca
  * @returns {Promise<object>} - Dados da localização
  */
-export const fetchLocationData = async (latitude: number, longitude: number) => {
+export const fetchLocationData = async (
+  latitude: number,
+  longitude: number,
+) => {
   const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-  
+
   try {
     const response = await fetch(url);
-    
+
     if (!response.ok) {
       throw new Error(`Erro na solicitação: ${response.statusText}`);
     }
 
     const data = await response.json();
     console.log('Dados da localização:', data);
-    
+
     return data; // Retorna os dados para uso posterior
   } catch (error) {
     console.error('Erro ao buscar dados da localização:', error);
     throw error; // Propaga o erro para que possa ser tratado onde a função é chamada
   }
 };
+
+export const calculateDistance = (
+  origin: Coordinates,
+  destination: Coordinates,
+): number => {
+  const distance = getDistance(
+    {latitude: origin.latitude, longitude: origin.longitude},
+    {latitude: destination.latitude, longitude: destination.longitude},
+  );
+
+  return distance; // Retorna a distância em metros
+};
+
+export function calculateAndFormatDistance(origin: Coordinates, destination: Coordinates): string {
+  const distanceInMeters = getDistance(
+      { latitude: origin.latitude, longitude: origin.longitude },
+      { latitude: destination.latitude, longitude: destination.longitude }
+  );
+
+  // Formatação em quilômetros e metros
+  if (distanceInMeters >= 1000) {
+      const distanceInKilometers = numeral(distanceInMeters / 1000).format('0.00');
+      return `${distanceInKilometers} km`;
+  } else {
+      return `${numeral(distanceInMeters).format('0')} m`;
+  }
+}
+
+export function calculateDistanceAndTime(
+  origin: Coordinates, 
+  destination: Coordinates, 
+  speedKmH: number
+): string {
+  const distanceInMeters = getDistance(
+      { latitude: origin.latitude, longitude: origin.longitude },
+      { latitude: destination.latitude, longitude: destination.longitude }
+  );
+
+  // Formatação da distância em quilômetros e metros
+  let formattedDistance: string;
+  if (distanceInMeters >= 1000) {
+      const distanceInKilometers = numeral(distanceInMeters / 1000).format('0.00');
+      formattedDistance = `${distanceInKilometers} km`;
+  } else {
+      formattedDistance = `${numeral(distanceInMeters).format('0')} m`;
+  }
+
+  // Cálculo do tempo estimado
+  const distanceInKilometers = distanceInMeters / 1000;
+  const timeInHours = distanceInKilometers / speedKmH;
+  const hours = Math.floor(timeInHours);
+  const minutes = Math.round((timeInHours - hours) * 60);
+
+  let formattedTime: string;
+  if (hours > 0) {
+      formattedTime = `${hours}h ${minutes}min`;
+  } else {
+      formattedTime = `${minutes}min`;
+  }
+
+  return `${formattedTime}`;
+}

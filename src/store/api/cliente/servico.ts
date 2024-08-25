@@ -20,7 +20,7 @@ export const clientServiceApiSlice = createApi({
     },
   }),
   endpoints: builder => ({
-    servicoAvaliable: builder.query<IServicoAvaliable[], void>({
+    servicoAvaliable: builder.mutation<IServicoAvaliable[], void>({
       query: bodyData => ({
         url: '/servico/cliente/disponivel',
         method: 'GET',
@@ -42,12 +42,15 @@ export const clientServiceApiSlice = createApi({
         return error;
       },
     }),
-    solicitarService: builder.mutation<ICreatedServicoSolicitado, ISolicitarService>({
+    solicitarService: builder.mutation<
+      ICreatedServicoSolicitado,
+      ISolicitarService
+    >({
       query: bodyData => ({
         url: `/solicitacao/${bodyData.servicoId}`,
         method: 'POST',
         body: {
-          coordenada: bodyData.coordenada
+          cordenada: bodyData.cordenada,
         },
         timeout: 10000,
       }),
@@ -77,4 +80,8 @@ export const clientServiceApiSlice = createApi({
   }),
 });
 
-export const {useServicoAvaliableQuery, useHistoricServiceQuery, useSolicitarServiceMutation} = clientServiceApiSlice;
+export const {
+  useServicoAvaliableMutation,
+  useHistoricServiceQuery,
+  useSolicitarServiceMutation,
+} = clientServiceApiSlice;

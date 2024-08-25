@@ -55,7 +55,7 @@ interface ConnectPayload {
 
 export const socketMiddleware: Middleware =
   () => (next: any) => (action: any) => {
-    console.log(action.type);
+    // console.log(action.type);
     if (action.type === 'socket/connect') {
       const {solicitacaoId, token} = action.payload as ConnectPayload;
       const socket = io(URL, {

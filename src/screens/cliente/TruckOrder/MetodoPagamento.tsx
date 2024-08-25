@@ -30,10 +30,9 @@ const MetodoPagamentoScreen: React.FC<
       const {latitude, longitude} = await getMyLocation();
       const response = await solicitarService({
         servicoId: route.params.id,
-        coordenada: `${latitude},${longitude}`,
+        cordenada: `${latitude},${longitude}`,
       }).unwrap();
       navigation.navigate(Routes.CLIENT_WAITING_ORDER, response);
-      console.log(response);
     } catch (error) {
       console.log(error);
       showErrorToast({

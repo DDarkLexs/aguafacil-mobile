@@ -79,7 +79,7 @@ interface ICreatedServicoSolicitado {
 
 interface ISSCoordenada {
   id: number;
-  coordenada: string;  // Consider renaming 'cordenada' to 'coordenada' for consistency
+  cordenada: string;  // Consider renaming 'cordenada' to 'coordenada' for consistency
   endereco: string;
   created: string;     // You could also use Date if you want to handle dates as Date objects
   updated: string;     // Same as above
@@ -118,6 +118,6 @@ interface IServicoArchive extends IServicoSolicitado {
 
 
 interface ISolicitarService {
-  coordenada: string;
+  cordenada: string;
   servicoId: number;
 }
