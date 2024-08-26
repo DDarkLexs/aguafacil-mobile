@@ -1,13 +1,18 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import DestinationTrip from 'app/components/maps/route';
 import {Routes} from 'app/constants/enums';
 import {useAppDispatch, useAppSelector} from 'app/hooks/useRedux';
 import {useSocket} from 'app/hooks/useSocket';
 import {useAppToast} from 'app/hooks/useToast';
 import {setMotoristaLocacao} from 'app/store/features/cliente/arquivo';
 import Layout from 'app/styles/Layout';
-import {calculateAndFormatDistance, calculateDistance, calculateDistanceAndTime, convertToCurrency} from 'app/utils';
+import {
+  calculateAndFormatDistance,
+  calculateDistanceAndTime,
+  convertToCurrency,
+} from 'app/utils';
 import React, {useEffect} from 'react';
-import {Alert, Linking, StyleSheet, View} from 'react-native';
+import {Alert, Linking, ScrollView, StyleSheet, View} from 'react-native';
 import {
   Avatar,
   Button,
@@ -25,8 +30,11 @@ const LocationConfirmScreen: React.FC<
   const dispatch = useAppDispatch();
   const [distancia, setDistancia] = React.useState<string>('');
   const [tempo, setTempo] = React.useState<string>('');
+  const [motoristaGps, setMotoristaGps] = React.useState<
+    number[] | null
+  >(null);
   const theme = useTheme();
-  const destino = route.params;
+  const {destination, origin} = route.params;
   const utilizador = useAppSelector(
     state => state.clientArquivo.servicoEmcurso?.utilizador,
   );
@@ -39,7 +47,7 @@ const LocationConfirmScreen: React.FC<
   const {socket, connectSocket, disconnectSocket, turnOnConnection} =
     useSocket();
   useEffect(() => {
-    console.log(destino)
+    console.log(destination);
     if (socket && socket.isConnected) {
       socket.socket?.on('motoristaTerminaSolicitacao', (data: any) => {
         showPrimaryToast({
@@ -66,22 +74,23 @@ const LocationConfirmScreen: React.FC<
               longitude: Number(data.lon),
             },
             {
-              latitude: Number(destino.cordenada.split(',')[0]),
-              longitude: Number(destino.cordenada.split(',')[1])
+              latitude: Number(destination.cordenada.split(',')[0]),
+              longitude: Number(destination.cordenada.split(',')[1]),
             },
-          )
+          );
           const tempoRestante = calculateDistanceAndTime(
             {
               latitude: Number(data.lat),
               longitude: Number(data.lon),
             },
             {
-              latitude: Number(destino.cordenada.split(',')[0]),
-              longitude: Number(destino.cordenada.split(',')[1])
-            },  
-            50
-          )
+              latitude: Number(destination.cordenada.split(',')[0]),
+              longitude: Number(destination.cordenada.split(',')[1]),
+            },
+            50,
+          );
           setTempo(tempoRestante);
+          setMotoristaGps([Number(data.lon), Number(data.lat)]);
 
           setDistancia(distance);
         },
@@ -102,7 +111,8 @@ const LocationConfirmScreen: React.FC<
         socket.socket.off('motoristaTerminaSolicitacao');
         socket.socket.off('motoristaAtualizaLocalizacao');
         socket.socket.off('motoristaAceitaSolicitacao');
-      //  dispatch(setMotoristaLocacao(null));
+        socket.socket.off('motoristaCancelaSolicitacao');
+        //  dispatch(setMotoristaLocacao(null));
       }
     } catch (error) {
       console.log(error);
@@ -147,82 +157,97 @@ const LocationConfirmScreen: React.FC<
       console.log(error);
     }
   };
-  
+
   return (
     <View style={styles.container}>
+      {/* faça aqui o container do mapa */}
+      {destination.cordenada && motoristaGps && (
+        <DestinationTrip
+          destino={[
+            Number(destination.cordenada.split(',')[0]),
+            Number(destination.cordenada.split(',')[1]),
+          ]}
+          driverLocation={motoristaGps}
+          origem={[Number(origin.lat), Number(origin.lon)]}
+        />
+      )}
+
       {/* Texto no topo */}
-      <Text style={styles.headerText}>Seu caminhão de água chega em: {tempo}</Text>
-      {/* Card com informações do destino e localização do motorista */}
-      {/* Card com informações do motorista */}
-      <Divider style={styles.divider} />
-      <Card style={styles.card}>
-        <Card.Title
-          title={utilizador?.nome}
-          left={() => (
-            <Avatar.Image
-              size={48}
-              source={{uri: servico?.motorista.fotoPerfil}}
-            />
-          )}
-          subtitle={`Distância: ${distancia}`}
-          subtitleStyle={styles.subtitle}
-        />
-        <Card.Content>
-          <Paragraph style={styles.rating}>⭐⭐⭐⭐⭐</Paragraph>
-        </Card.Content>
-      </Card>
-      <Divider style={styles.divider} />
-      <Card style={styles.card}>
-        <Card.Title
-          title={'Localização do destino'}
-          subtitle={destino?.endereco}
-          left={() => <Avatar.Icon size={48} icon="map-marker-outline" />}
-        />
-        <Card.Title
-          title={'Localização do motorista'}
-          subtitle={motoristaLocalizacao?.endereco}
-          left={() => (
-            <Avatar.Icon
-              size={48}
-              style={{backgroundColor: theme.colors.secondary}}
-              icon="map-marker-outline"
-            />
-          )}
-        />
-      </Card>
-   
-
-      {/* Separador com método de pagamento e valor */}
-      <Divider style={styles.divider} />
-      <View style={styles.paymentContainer}>
-        <Text style={styles.paymentText}>Valor a pagar</Text>
-        <Text style={styles.valueText}>
-          {convertToCurrency(Number(servico?.preco))}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.headerText}>
+          Seu caminhão de água chega em {tempo}
         </Text>
-      </View>
+        {/* Card com informações do destino e localização do motorista */}
+        <Divider style={styles.divider} />
+        <Card style={styles.card}>
+          <Card.Title
+            title={'Localização do destino'}
+            subtitle={destination?.endereco}
+            left={() => <Avatar.Icon size={48} icon="map-marker-outline" />}
+          />
+          <Card.Title
+            title={'Localização do motorista'}
+            subtitle={motoristaLocalizacao?.endereco}
+            left={() => (
+              <Avatar.Icon
+                size={48}
+                style={{backgroundColor: theme.colors.secondary}}
+                icon="map-marker-outline"
+              />
+            )}
+          />
+        </Card>
+        {/* Card com informações do motorista */}
+        <Divider style={styles.divider} />
+        <Card style={styles.card}>
+          <Card.Title
+            title={utilizador?.nome}
+            left={() => (
+              <Avatar.Image
+                size={48}
+                source={{uri: servico?.motorista.fotoPerfil}}
+              />
+            )}
+            subtitle={`Distância: ${distancia}`}
+            subtitleStyle={styles.subtitle}
+          />
+          <Card.Content>
+            <Paragraph style={styles.rating}>⭐⭐⭐⭐⭐</Paragraph>
+          </Card.Content>
+        </Card>
 
-      {/* Botões de ação */}
-      <View style={styles.buttonContainer}>
-        <Button
-          onPress={() => Linking.openURL(`tel: +244 ${utilizador?.telefone}`)}
-          mode="contained"
-          style={[{...styles.button, borderRadius: Layout.radius}]}>
-          Chamar
-        </Button>
-        <Button
-          mode="contained"
-          style={[{...styles.button, borderRadius: Layout.radius}]}>
-          Mensagem
-        </Button>
-      </View>
+        {/* Separador com método de pagamento e valor */}
+        <Divider style={styles.divider} />
+        <View style={styles.paymentContainer}>
+          <Text style={styles.paymentText}>Valor a pagar</Text>
+          <Text style={styles.valueText}>
+            {convertToCurrency(Number(servico?.preco))}
+          </Text>
+        </View>
 
-      {/* Botão de cancelar */}
-      <Button
-        mode="text"
-        onPress={cancelOrder}
-        style={[{...styles.cancelButton, borderRadius: Layout.radius}]}>
-        Cancelar
-      </Button>
+        {/* Botões de ação */}
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={() => Linking.openURL(`tel: +244 ${utilizador?.telefone}`)}
+            mode="contained"
+            style={[{...styles.button, borderRadius: Layout.radius}]}>
+            Chamar
+          </Button>
+          <Button
+            mode="contained"
+            style={[{...styles.button, borderRadius: Layout.radius}]}>
+            Mensagem
+          </Button>
+        </View>
+
+        {/* Botão de cancelar */}
+        <Button
+          mode="text"
+          onPress={cancelOrder}
+          style={[{...styles.cancelButton, borderRadius: Layout.radius}]}>
+          Cancelar
+        </Button>
+      </ScrollView>
     </View>
   );
 };
@@ -235,6 +260,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginTop: 16,
     marginBottom: 16,
   },
 

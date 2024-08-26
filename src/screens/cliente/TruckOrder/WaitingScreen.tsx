@@ -5,7 +5,7 @@ import {useAppDispatch} from 'app/hooks/useRedux';
 import {useAppToast} from 'app/hooks/useToast';
 import {setServicoEmCurso} from 'app/store/features/cliente/arquivo';
 import Layout from 'app/styles/Layout';
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, Button} from 'react-native-paper';
 import {useSocket} from '../../../hooks/useSocket';
@@ -49,10 +49,10 @@ const WaitingScreen: React.FC<
           });
           dispatch(setServicoEmCurso(data));
           console.log(data.solicitacao.SSCoordenada);
-          navigation.navigate(
-            Routes.CLIENT_SERVICE_CONFIRMED,
-            data.solicitacao.SSCoordenada[0],
-          );
+          navigation.navigate(Routes.CLIENT_SERVICE_CONFIRMED, {
+            destination: data.solicitacao.SSCoordenada[0],
+            origin: data.data,
+          });
         },
       );
       socket.socket?.on('motoristaRecusaSolicitacao', (data: any) => {
@@ -85,7 +85,7 @@ const WaitingScreen: React.FC<
       });
       navigation.navigate(Routes.CLIENT_HOME);
     }
-  }
+  };
 
   useEffect(() => {
     // Configuração da animação

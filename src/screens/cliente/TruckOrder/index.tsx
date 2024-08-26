@@ -6,6 +6,7 @@ import * as React from 'react';
 import LocationConfirmScreen from './LocationConfirm';
 import MetodoPagamentoScreen from './MetodoPagamento';
 import WaitingScreen from './WaitingScreen';
+import ConclusionScreen from './ConclusionScreen';
 
 const Stack = createStackNavigator<StackScreen>();
 
@@ -30,6 +31,12 @@ const TruckOrderStack: React.FC<
         component={LocationConfirmScreen}
         options={{title: 'Motorista à caminho', headerLeft: () => null}}
       />
+      <Stack.Screen 
+        name={Routes.CLIENT_FINISHED_ORDER}
+        component={ConclusionScreen}
+        options={{title: 'Motorista à caminho', headerLeft: () => null}}
+      />
+
     </Stack.Navigator>
   );
 };

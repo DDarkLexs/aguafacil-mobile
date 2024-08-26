@@ -49,6 +49,7 @@ interface ICreatedServicoSolicitado {
 interface IMotoristaAceitaSolicitacaoResponse {
   solicitacao: ICreatedServicoSolicitado;
   utilizador: Utilizador;
+  data: IData
 }
 
 interface IAddress {
@@ -81,5 +82,10 @@ interface IData {
 }
 
 interface IMotoristaUpdatePositionResponse {
+  data: IData;
+}
+
+
+interface IMotoristaOrigin {
   data: IData;
 }
