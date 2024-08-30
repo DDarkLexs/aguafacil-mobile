@@ -3,7 +3,7 @@ import {Routes} from 'app/constants/enums';
 import {useAppDispatch, useAppSelector} from 'app/hooks/useRedux';
 import {useAppToast} from 'app/hooks/useToast';
 import {useHistoricServiceQuery} from 'app/store/api/cliente/servico';
-import {setServicoArquivo} from 'app/store/features/cliente/arquivo';
+import {setServico} from 'app/store/features/Cliente/servico';
 import {convertDateToString} from 'app/utils';
 import * as React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
@@ -15,11 +15,11 @@ const HistoricoScreen: React.FC<
   const apiQuery = useHistoricServiceQuery();
   const dispatch = useAppDispatch();
   const {showErrorToast} = useAppToast();
-  const data = useAppSelector(state => state.clientArquivo.servico);
+  const data = useAppSelector(state => state.clientServico.servico);
 
   React.useEffect(() => {
     if (apiQuery.isSuccess) {
-      dispatch(setServicoArquivo(apiQuery.data));
+      dispatch(setServico(apiQuery.data));
     }
 
     if (apiQuery.isError) {

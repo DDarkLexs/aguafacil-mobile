@@ -1,7 +1,8 @@
 // import {persistReducer, persistStore} from 'redux-persist';
 
 import authSlice from 'app/store/features/auth';
-import clientearquivoSlice from 'app/store/features/cliente/arquivo';
+import clienteServicoSlice from 'app/store/features/Cliente/servico';
+import clienteEmCursoSlice from 'app/store/features/cliente/emCurso';
 import {
   AsyncStorage,
   combineReducers,
@@ -17,8 +18,9 @@ import { socketMiddleware, socketReducer } from './features/socket';
 
 const rootReducer = combineReducers({
   auth: authSlice,
-  clientArquivo: clientearquivoSlice,
+  clientServico: clienteServicoSlice ,
   socket: socketReducer,
+  clienteEmCurso: clienteEmCursoSlice,
   [clientServiceApiSlice.reducerPath]: clientServiceApiSlice.reducer,
   [authApiSlice.reducerPath]: authApiSlice.reducer,
   [locationApiSlice.reducerPath]: locationApiSlice.reducer,
@@ -27,7 +29,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: '@AGUAFACIL',
   storage: AsyncStorage,
-  whitelist: ['auth', 'clientArquivo'], // Os reducers que você quer persistir
+  whitelist: ['auth', 'clientServico', 'clienteEmCurso'], // Os reducers que você quer persistir
 };
 
 const persistedReducer = persistReducer({...persistConfig}, rootReducer);

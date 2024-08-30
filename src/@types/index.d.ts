@@ -1,4 +1,6 @@
 type TUsuarioTipo = 'CLIENTE' | 'MOTORISTA';
+type TMotoristaLocation = (IAddress & {coordinates: string, endereco: string})
+
 
 interface IUsuario {
   id: number;

@@ -3,7 +3,7 @@ import {Routes} from 'app/constants/enums';
 import {useAuth} from 'app/hooks/useAuth';
 import {useAppDispatch} from 'app/hooks/useRedux';
 import {useAppToast} from 'app/hooks/useToast';
-import {setServicoEmCurso} from 'app/store/features/cliente/arquivo';
+import {setServicoEmCurso} from 'app/store/features/cliente/emCurso';
 import Layout from 'app/styles/Layout';
 import React, {useEffect, useRef} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
