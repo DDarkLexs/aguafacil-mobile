@@ -1,28 +1,44 @@
-// import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// interface IServicoOnState {
-//     id: number;
-//     cordanada: string;
-// }
+interface IEmcursoState {
+    solicitacao?: IServicoSolicitado | null;
+    data: IMotoristaAceitaSolicitacaoResponse | null;
+    motoristalocaizacaoEmCurso: TMotoristaLocation | null;
+    servicoEmcurso: IMotoristaAceitaSolicitacaoResponse | null;
+}
 
-// const initialState: IServicoOnState = {
-//         id: null,
-//         cordanada: null,
+const initialState: IEmcursoState = {
+    data: null,
+    motoristalocaizacaoEmCurso: null,
+    solicitacao: null,
+    servicoEmcurso: null
 
+};
 
-// };
+const clienteEmCursoSlice = createSlice({
+    name: 'clienteEmCurso',
+    initialState,
+    reducers: {
+        resetClientArquivo: () => initialState,
+        setServicoEmCurso: (
+            state,
+            action: PayloadAction<IMotoristaAceitaSolicitacaoResponse | null>,
+        ) => {
+            state.data = action.payload;
+        },
+        setMotoristaLocacao: (
+            state,
+            action: PayloadAction<TMotoristaLocation | null>,
+        ) => {
+            state.motoristalocaizacaoEmCurso = action.payload;
+        },
+    },
+});
 
-// const arquivoSlice = createSlice({
-//   name: 'clientServiceOn',
-//   initialState,
-//   reducers: {
-//     resetClientArquivo: () => initialState,
-//     setServicoEmCurso: (state, action: PayloadAction<any>) => {
-    
-//     },
-//   },
-// });
+export const {
+    resetClientArquivo,
+    setServicoEmCurso,
+    setMotoristaLocacao,
+} = clienteEmCursoSlice.actions;
 
-// export const {} = arquivoSlice.actions;
-
-// export default arquivoSlice.reducer;
+export default clienteEmCursoSlice.reducer;

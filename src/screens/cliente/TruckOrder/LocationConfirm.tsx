@@ -4,7 +4,7 @@ import {Routes} from 'app/constants/enums';
 import {useAppDispatch, useAppSelector} from 'app/hooks/useRedux';
 import {useSocket} from 'app/hooks/useSocket';
 import {useAppToast} from 'app/hooks/useToast';
-import {setMotoristaLocacao} from 'app/store/features/cliente/arquivo';
+import {setMotoristaLocacao} from 'app/store/features/cliente/emCurso';
 import Layout from 'app/styles/Layout';
 import {
   calculateAndFormatDistance,
@@ -36,13 +36,13 @@ const LocationConfirmScreen: React.FC<
   const theme = useTheme();
   const {destination, origin} = route.params;
   const utilizador = useAppSelector(
-    state => state.clientArquivo.servicoEmcurso?.utilizador,
+    state => state.clienteEmCurso.servicoEmcurso?.utilizador,
   );
   const servico = useAppSelector(
-    state => state.clientArquivo.servicoEmcurso?.solicitacao,
+    state => state.clienteEmCurso.servicoEmcurso?.solicitacao,
   );
   const motoristaLocalizacao = useAppSelector(
-    state => state.clientArquivo.motoristalocaizacaoEmCurso,
+    state => state.clienteEmCurso.motoristalocaizacaoEmCurso,
   );
   const {socket, connectSocket, disconnectSocket, turnOnConnection} =
     useSocket();
