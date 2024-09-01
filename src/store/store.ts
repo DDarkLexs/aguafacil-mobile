@@ -1,7 +1,7 @@
 // import {persistReducer, persistStore} from 'redux-persist';
 
 import authSlice from 'app/store/features/auth';
-import clienteServicoSlice from 'app/store/features/Cliente/servico';
+import clienteServicoSlice from 'app/store/features/cliente/servico';
 import clienteEmCursoSlice from 'app/store/features/cliente/emCurso';
 import {
   AsyncStorage,
