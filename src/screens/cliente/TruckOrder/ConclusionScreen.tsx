@@ -1,12 +1,40 @@
 // src/screens/cliente/TruckOrder/ConclusionScreen.tsx
 
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Routes} from 'app/constants/enums';
+import Layout from 'app/styles/Layout';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {Button} from 'react-native-paper';
 
-const ConclusionScreen = () => {
+const ConclusionScreen: React.FC<
+  NativeStackScreenProps<StackScreen, Routes.CLIENT_FINISHED_ORDER>
+> = ({navigation, route}): React.JSX.Element => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Thank you for placing your order!</Text>
+      <View
+        style={{
+          width: 150,
+          height: 150,
+          borderRadius: 100,
+          backgroundColor: '#ccc',
+          justifyContent: 'center',
+          alignItems: 'center',
+          bottom: 20,
+        }}>
+        <Image
+          style={{width: 100, height: 100}}
+          source={require('app/assets/images/icon.png')}
+        />
+      </View>
+      <Text style={styles.text}>Valor a pagar</Text>
+      <Text style={{fontSize: 50, fontWeight: 'normal'}}>R$ 0,00</Text>
+      <Button
+        onPress={() => navigation.navigate(Routes.CLIENT_HOME)}
+        style={{marginTop: 20, borderRadius: Layout.radius}}
+        mode="contained">
+        Terminar
+      </Button>
     </View>
   );
 };

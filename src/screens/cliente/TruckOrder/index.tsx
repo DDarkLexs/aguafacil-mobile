@@ -34,7 +34,7 @@ const TruckOrderStack: React.FC<
       <Stack.Screen 
         name={Routes.CLIENT_FINISHED_ORDER}
         component={ConclusionScreen}
-        options={{title: 'Motorista à caminho', headerLeft: () => null}}
+        options={{title: 'Serviço concluída', headerLeft: () => null}}
       />
 
     </Stack.Navigator>

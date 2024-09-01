@@ -56,7 +56,7 @@ const LocationConfirmScreen: React.FC<
           img: require('../../../assets/images/checked.png'),
         });
         disconnectSocket();
-        navigation.navigate(Routes.CLIENT_HOME);
+        navigation.navigate(Routes.CLIENT_FINISHED_ORDER);
       });
       socket.socket?.on(
         'motoristaAtualizaLocalizacao',
