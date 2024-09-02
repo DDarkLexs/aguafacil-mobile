@@ -3,6 +3,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Routes} from 'app/constants/enums';
 import Layout from 'app/styles/Layout';
+import { convertToCurrency } from 'app/utils';
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
@@ -28,7 +29,7 @@ const ConclusionScreen: React.FC<
         />
       </View>
       <Text style={styles.text}>Valor a pagar</Text>
-      <Text style={{fontSize: 50, fontWeight: 'normal'}}>R$ 0,00</Text>
+      <Text style={{fontSize: 50, fontWeight: 'normal'}}>{convertToCurrency(route.params.valor)}</Text>
       <Button
         onPress={() => navigation.navigate(Routes.CLIENT_HOME)}
         style={{marginTop: 20, borderRadius: Layout.radius}}

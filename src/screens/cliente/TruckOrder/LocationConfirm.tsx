@@ -49,14 +49,14 @@ const LocationConfirmScreen: React.FC<
   useEffect(() => {
     console.log(destination);
     if (socket && socket.isConnected) {
-      socket.socket?.on('motoristaTerminaSolicitacao', (data: any) => {
+      socket.socket?.on('motoristaTerminaSolicitacao', (data: ISSNotaPagamento) => {
         showPrimaryToast({
           text1: 'Solicitação concluída',
           text2: 'Sua solicitação foi concluída',
           img: require('../../../assets/images/checked.png'),
         });
         disconnectSocket();
-        navigation.navigate(Routes.CLIENT_FINISHED_ORDER);
+        navigation.navigate(Routes.CLIENT_FINISHED_ORDER, data);
       });
       socket.socket?.on(
         'motoristaAtualizaLocalizacao',

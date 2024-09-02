@@ -1,5 +1,5 @@
 type TUsuarioTipo = 'CLIENTE' | 'MOTORISTA';
-type TMotoristaLocation = (IAddress & {coordinates: string, endereco: string})
+type TMotoristaLocation = (IAddress & { coordinates: string, endereco: string })
 
 
 interface IUsuario {
@@ -80,13 +80,13 @@ interface ICreatedServicoSolicitado {
 }
 
 interface ISSNotaPagamento {
-  id: number;                   // `Int` in Prisma corresponds to `number` in TypeScript
-  valor: number;                // `Float` in Prisma corresponds to `number` in TypeScript
-  formaDePagamento: string;     // `String` in Prisma corresponds to `string` in TypeScript
-  created: Date;                // `DateTime` in Prisma corresponds to `Date` in TypeScript
-  updated: Date;                // `DateTime` in Prisma corresponds to `Date` in TypeScript
-  ServicoSolicitado?: ServicoSolicitado; // Optional relation field, `ServicoSolicitado?` translates to `ServicoSolicitado?` in TypeScript
-  servicoSolicitadoId?: number; // Optional `Int?` translates to optional `number` in TypeScript
+  id: number;
+  valor: number;
+  formaDePagamento: string;
+  created: Date;
+  updated: Date;
+  ServicoSolicitado?: ServicoSolicitado;
+  servicoSolicitadoId?: number;
 }
 interface ISSCoordenada {
   id: number;
