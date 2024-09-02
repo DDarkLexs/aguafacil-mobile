@@ -79,6 +79,15 @@ interface ICreatedServicoSolicitado {
   SSCoordenada: SSCoordenada[];
 }
 
+interface ISSNotaPagamento {
+  id: number;                   // `Int` in Prisma corresponds to `number` in TypeScript
+  valor: number;                // `Float` in Prisma corresponds to `number` in TypeScript
+  formaDePagamento: string;     // `String` in Prisma corresponds to `string` in TypeScript
+  created: Date;                // `DateTime` in Prisma corresponds to `Date` in TypeScript
+  updated: Date;                // `DateTime` in Prisma corresponds to `Date` in TypeScript
+  ServicoSolicitado?: ServicoSolicitado; // Optional relation field, `ServicoSolicitado?` translates to `ServicoSolicitado?` in TypeScript
+  servicoSolicitadoId?: number; // Optional `Int?` translates to optional `number` in TypeScript
+}
 interface ISSCoordenada {
   id: number;
   cordenada: string;  // Consider renaming 'cordenada' to 'coordenada' for consistency
