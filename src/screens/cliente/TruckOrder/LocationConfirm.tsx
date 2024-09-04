@@ -38,6 +38,10 @@ const LocationConfirmScreen: React.FC<
   const utilizador = useAppSelector(
     state => state.clienteEmCurso.servicoEmcurso?.utilizador,
   );
+  const u = useAppSelector(
+    state => state.clienteEmCurso.servicoEmcurso,
+  );
+  console.log(u)
   const servico = useAppSelector(
     state => state.clienteEmCurso.servicoEmcurso?.solicitacao,
   );
