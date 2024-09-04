@@ -122,7 +122,7 @@ interface IServicoAvaliable extends IServicoMotorista {
 }
 
 interface IServicoArchive extends IServicoSolicitado {
-  motorista: IMotorista & {
+  motorista: IMotorista & { 
     usuario: IUsuario;
   };
 }

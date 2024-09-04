@@ -48,7 +48,7 @@ const WaitingScreen: React.FC<
             img: require('../../../assets/images/checked.png'),
           });
           dispatch(setServicoEmCurso(data));
-          console.log(data.solicitacao.SSCoordenada);
+          console.log(data.utilizador);
           navigation.navigate(Routes.CLIENT_SERVICE_CONFIRMED, {
             destination: data.solicitacao.SSCoordenada[0],
             origin: data.data,
