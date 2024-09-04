@@ -1,7 +1,7 @@
 import Mapbox from '@rnmapbox/maps';
 import {MAPBOX_TOKEN} from 'app/constants/Index';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
 
 Mapbox.setAccessToken(MAPBOX_TOKEN);
@@ -26,7 +26,7 @@ const DestinationTrip: React.FC<DestinationTripProps> = rotas => {
   useEffect(() => {
     const fetchRoute = async () => {
       try {
-        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origemLongitude},${origemLatitude};${destinoLongitude},${destinoLatitude}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
+        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${rotas.driverLocation[0]},${rotas.driverLocation[1]};${destinoLongitude},${destinoLatitude}?geometries=geojson&access_token=${MAPBOX_TOKEN}`;
         const response = await fetch(url);
         const data = await response.json();
         if (data.routes && data.routes.length > 0) {
@@ -45,16 +45,16 @@ const DestinationTrip: React.FC<DestinationTripProps> = rotas => {
 
   return (
     <Mapbox.MapView logoEnabled={false} ref={mapRef} style={styles.map}>
-      <Mapbox.PointAnnotation draggable={true} id="origin" coordinate={origem}>
+       {/* <Mapbox.PointAnnotation draggable={true} id="origin" coordinate={origem}>
         <View style={styles.annotationContainer}>
           <View style={styles.annotationFill} />
         </View>
-      </Mapbox.PointAnnotation>
+      </Mapbox.PointAnnotation> */}
 
       <Mapbox.PointAnnotation id="destination" coordinate={destino}>
         <View style={styles.annotationContainer}>
           <View style={styles.annotationFill} />
-        </View>
+          </View> 
       </Mapbox.PointAnnotation>
 
       <Mapbox.PointAnnotation

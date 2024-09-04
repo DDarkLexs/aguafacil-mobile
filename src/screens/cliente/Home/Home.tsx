@@ -4,7 +4,7 @@ import {useAppNavigation} from 'app/hooks/useNavigation';
 import {useAppToast} from 'app/hooks/useToast';
 import {useServicoAvaliableMutation} from 'app/store/api/cliente/servico';
 import Layout from 'app/styles/Layout';
-import {convertToCurrency} from 'app/utils';
+import {convertToCurrency, convertToLitro} from 'app/utils';
 import {getDistance} from 'geolib';
 import numeral from 'numeral';
 import React, {useEffect, useState} from 'react';
@@ -18,9 +18,9 @@ const TruckCard: React.FC<{truck: IServicoAvaliable}> = ({truck}) => {
     <Card style={styles.card}>
       <Card.Title
         title={truck.motorista.usuario.nome}
-        subtitle={`${convertToCurrency(truck.preco)} | Capacidade: ${
-          truck.litroAgua
-        }L`}
+        subtitle={`${convertToCurrency(truck.preco)} | Litros: ${
+          convertToLitro(truck.litroAgua)
+        }`}
         left={props => (
           <Avatar.Image {...props} source={{uri: truck.motorista.fotoPerfil}} />
         )}

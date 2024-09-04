@@ -10,6 +10,7 @@ import {
   calculateAndFormatDistance,
   calculateDistanceAndTime,
   convertToCurrency,
+  playSound_1,
 } from 'app/utils';
 import React, {useEffect} from 'react';
 import {Alert, Linking, ScrollView, StyleSheet, View} from 'react-native';
@@ -36,14 +37,11 @@ const LocationConfirmScreen: React.FC<
   const theme = useTheme();
   const {destination, origin} = route.params;
   const utilizador = useAppSelector(
-    state => state.clienteEmCurso.servicoEmcurso?.utilizador,
+    state => state.clienteEmCurso.data?.utilizador,
   );
-  const u = useAppSelector(
-    state => state.clienteEmCurso.servicoEmcurso,
-  );
-  console.log(u)
+  console.log(utilizador)
   const servico = useAppSelector(
-    state => state.clienteEmCurso.servicoEmcurso?.solicitacao,
+    state => state.clienteEmCurso.data?.solicitacao,
   );
   const motoristaLocalizacao = useAppSelector(
     state => state.clienteEmCurso.motoristalocaizacaoEmCurso,
@@ -51,7 +49,6 @@ const LocationConfirmScreen: React.FC<
   const {socket, connectSocket, disconnectSocket, turnOnConnection} =
     useSocket();
   useEffect(() => {
-    console.log(destination);
     if (socket && socket.isConnected) {
       socket.socket?.on('motoristaTerminaSolicitacao', (data: ISSNotaPagamento) => {
         showPrimaryToast({
@@ -62,6 +59,16 @@ const LocationConfirmScreen: React.FC<
         disconnectSocket();
         navigation.navigate(Routes.CLIENT_FINISHED_ORDER, data);
       });
+      socket.socket?.on(
+        'motoristaChegou', (data: any) => {
+          showPrimaryToast({
+            text1: 'O motorista chegou!',
+            text2: "O  motorista chegou no seu destino",
+            img: require('app/assets/images/checked.png'),
+          });
+          playSound_1();
+        });
+    
       socket.socket?.on(
         'motoristaAtualizaLocalizacao',
         ({data}: IMotoristaUpdatePositionResponse) => {
@@ -116,6 +123,7 @@ const LocationConfirmScreen: React.FC<
         socket.socket.off('motoristaAtualizaLocalizacao');
         socket.socket.off('motoristaAceitaSolicitacao');
         socket.socket.off('motoristaCancelaSolicitacao');
+        socket.socket.off('motoristaChegou');
         //  dispatch(setMotoristaLocacao(null));
       }
     } catch (error) {

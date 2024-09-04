@@ -4,9 +4,11 @@ import {useAuth} from 'app/hooks/useAuth';
 import {useAppToast} from 'app/hooks/useToast';
 import {useSolicitarServiceMutation} from 'app/store/api/cliente/servico';
 import Layout from 'app/styles/Layout';
+import { convertToCurrency } from 'app/utils';
 import {getMyLocation} from 'app/utils/location';
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
+import { convertToLitro } from '../../../utils/index';
 import {
   Button,
   Card,
@@ -20,7 +22,7 @@ const MetodoPagamentoScreen: React.FC<
   NativeStackScreenProps<StackScreen, Routes.CLIENT_PAYMENT_METHOD>
 > = ({navigation, route}): React.JSX.Element => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    React.useState<string>('');
+    React.useState<string>('Numerário');
   const data = route.params;
   const {cliente, token} = useAuth();
   const [solicitarService, {isLoading}] = useSolicitarServiceMutation();
@@ -60,20 +62,20 @@ const MetodoPagamentoScreen: React.FC<
         <Card.Content>
           <Title>Mustang Shelby GT</Title>
           <Paragraph>4.9 (531 reviews)</Paragraph>
-          <Paragraph>10000 L</Paragraph>
-          <Paragraph>1000 Kz</Paragraph>
+          <Paragraph>{convertToLitro(data.litroAgua)}</Paragraph>
+          <Paragraph>{convertToCurrency(data.preco)}</Paragraph>
         </Card.Content>
         {/* <Card.Cover source={require('app/assets/images/icon.png')} /> */}
       </Card>
-
+      
       <Text style={styles.label}>Selecione o meio de pagamento</Text>
       <RadioButton.Group
         onValueChange={value => setSelectedPaymentMethod(value)}
         value={selectedPaymentMethod}>
-        <View style={styles.paymentMethod}>
+        {/* <View style={styles.paymentMethod}>
           <RadioButton disabled={isLoading} value="Multicaixa" />
           <Text>Multicaixa</Text>
-        </View>
+        </View> */}
         <View style={styles.paymentMethod}>
           <RadioButton disabled={isLoading} value="Numerário" />
           <Text>Numerário</Text>
